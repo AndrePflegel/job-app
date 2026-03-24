@@ -12,4 +12,11 @@ class JobListingController extends Controller
 
         return view('jobs.index', compact('jobs'));
     }
+
+    public function show($id)
+    {
+        $job = JobListing::with('company', 'category', 'user')->findOrFail($id);
+
+        return view('jobs.show', compact('job'));
+    }
 }

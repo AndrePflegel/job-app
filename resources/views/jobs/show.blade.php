@@ -1,15 +1,10 @@
 @extends('layouts.app')
 
 @section('content')
+    <h1>{{ $job->title }}</h1>
 
-<h1>Jobanzeigen</h1>
-
-@foreach($jobs as $job)
-    <div style="margin-bottom: 20px; padding: 15px; border: 1px solid #ccc;">
-        <h2>
-            <a href="/jobs/{{ $job->id }}">{{ $job->title }}</a>
-        </h2>
-
+    <div style="padding: 20px; border: 1px solid #ccc; margin-top: 20px;">
+        <p><strong>Beschreibung:</strong></p>
         <p>{{ $job->description }}</p>
 
         <p><strong>Firma:</strong> {{ $job->company->name }}</p>
@@ -18,6 +13,8 @@
         <p><strong>Gehalt:</strong> {{ $job->salary }}</p>
         <p><strong>Erstellt von:</strong> {{ $job->user->name }}</p>
     </div>
-@endforeach
 
+    <p style="margin-top: 20px;">
+        <a href="/jobs">← Zurück zur Übersicht</a>
+    </p>
 @endsection

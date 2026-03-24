@@ -8,3 +8,4 @@ Route::get('/', function () {
 });
 
 Route::get('/jobs', [JobListingController::class, 'index']);
+Route::get('/jobs/{id}', [JobListingController::class, 'show']);
