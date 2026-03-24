@@ -4,6 +4,12 @@
 <div class="job-card">
     <h1>{{ $job->title }}</h1>
 
+    @if (session('success'))
+    <div style="background: #e6ffed; color: #1f6b3b; padding: 15px; margin-bottom: 20px; border: 1px solid #a6d8b8;">
+        {{ session('success') }}
+    </div>
+    @endif
+
     <p><strong>Beschreibung:</strong></p>
     <p>{{ $job->description }}</p>
 
@@ -13,6 +19,18 @@
     <p><strong>Gehalt:</strong> {{ $job->salary }}</p>
     <p><strong>Erstellt von:</strong> {{ $job->user->name }}</p>
 
-    <a class="back-link" href="{{ route('jobs.index') }}">← Zurück zur Übersicht</a>
+    <div class="action-row">
+        <a class="btn btn-primary" href="{{ route('jobs.edit', ['id' => $job->id, 'return' => request('return', request()->fullUrl())]) }}">Bearbeiten</a>
+
+        <form class="inline-form" action="{{ route('jobs.destroy', $job->id) }}" method="POST" onsubmit="return confirm('Möchtest du diese Jobanzeige wirklich löschen?');">
+            @csrf
+            @method('DELETE')
+            <button class="btn btn-danger" type="submit">Löschen</button>
+            <input type="hidden" name="return" value="{{ request('return', request()->fullUrl()) }}">
+        </form>
+
+
+        <a class="btn btn-secondary" href="{{ request('return', route('jobs.index')) }}">Zurück</a>
+    </div>
 </div>
 @endsection

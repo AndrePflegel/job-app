@@ -64,13 +64,65 @@
             text-decoration: underline;
         }
 
-        .back-link {
-            display: inline-block;
-            margin-top: 20px;
-        }
-
         .pagination {
             margin-top: 30px;
+        }
+
+        .action-row {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-top: 18px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 8px 14px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 0.95rem;
+            line-height: 1.2;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: #f26b1d;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            opacity: 0.9;
+        }
+
+        .btn-danger {
+            background: #c62828;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            opacity: 0.9;
+        }
+
+        .btn-secondary {
+            background: #e9e9e9;
+            color: #1f1f1f;
+            border: 1px solid #ccc;
+        }
+
+        .btn-secondary:hover {
+            background: #dedede;
+        }
+
+        .inline-form {
+            display: inline;
+            margin: 0;
         }
     </style>
 </head>

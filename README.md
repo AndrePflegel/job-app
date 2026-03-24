@@ -1,57 +1,123 @@
-# Job App
+# Jobbörse (Laravel Projekt)
 
-Eine Laravel-Webanwendung zur Anzeige und Verwaltung von Jobanzeigen.
+## Beschreibung
 
-## Projektbeschreibung
+Diese Webanwendung dient zur Verwaltung von Jobanzeigen durch interne Mitarbeiter.
 
-In dieser Anwendung können interne Benutzer Jobanzeigen verwalten.  
-Jede Jobanzeige gehört zu:
+Benutzer können:
 
-- einer Firma
-- einer Kategorie
-- einem internen Benutzer
+* Jobanzeigen anzeigen (Übersicht & Detailansicht)
+* neue Jobanzeigen erstellen
+* bestehende Jobanzeigen bearbeiten
+* Jobanzeigen löschen
 
-Die Anwendung wurde mit Laravel, Eloquent, Migrationen, Factorys, Seedern und Blade-Views umgesetzt.
+Die Anwendung bildet ein vollständiges CRUD-System ab.
 
-## Funktionen
+---
 
-- Übersicht aller Jobanzeigen
-- Detailansicht einzelner Jobanzeigen
-- Beziehungen zwischen Jobanzeigen, Firmen, Kategorien und Benutzern
-- Seed-Daten mit Faker
-- Blade-Layout für wiederverwendbare Seitenstruktur
+## Technologien
 
-## Verwendete Technologien
+* PHP
+* Laravel Framework
+* Blade Templates
+* MySQL / MariaDB
+* HTML / CSS
 
-- PHP
-- Laravel
-- Blade
-- Eloquent ORM
-- MySQL / MariaDB
-- Faker
+---
 
-## Datenmodell
+## Funktionen (CRUD)
 
-Haupttabellen:
+* **Create:** neue Jobanzeigen erstellen
+* **Read:** Übersicht und Detailansicht
+* **Update:** Jobanzeigen bearbeiten
+* **Delete:** Jobanzeigen löschen
 
-- users
-- companies
-- categories
-- job_listings
+---
 
-Zusätzliche Laravel-Systemtabellen:
+## Besonderheiten
 
-- jobs
-- failed_jobs
-- job_batches
-- cache
-- sessions
+* Pagination für große Datenmengen
+* konsistentes UI (einheitliche Aktionen in allen Ansichten)
+* Rücksprung-Logik (Return-Parameter), damit Nutzer nach Aktionen zur richtigen Seite zurückkehren
+* relationale Datenstruktur (Jobs, Unternehmen, Kategorien, Benutzer)
+
+---
 
 ## Installation
 
-```bash
-composer install
-cp .env.example .env
-php artisan key:generate
-php artisan migrate:fresh --seed
-php artisan serve
+1. Repository klonen:
+
+   ```
+   git clone <repository-url>
+   cd job-app
+   ```
+
+2. Abhängigkeiten installieren:
+
+   ```
+   composer install
+   ```
+
+3. Umgebungsdatei erstellen:
+
+   ```
+   cp .env.example .env
+   ```
+
+4. App-Key generieren:
+
+   ```
+   php artisan key:generate
+   ```
+
+5. Datenbank konfigurieren in `.env`
+
+6. Migrationen ausführen:
+
+   ```
+   php artisan migrate
+   ```
+
+7. Optional: Testdaten einfügen:
+
+   ```
+   php artisan db:seed
+   ```
+
+8. Server starten:
+
+   ```
+   php artisan serve
+   ```
+
+---
+
+## Projektstruktur (vereinfacht)
+
+* `app/Models` → Datenmodelle (JobListing, Company, Category, User)
+* `app/Http/Controllers` → Logik (JobListingController)
+* `resources/views` → Blade Templates (UI)
+* `database/migrations` → Datenbankstruktur
+
+---
+
+## Autor
+
+Andre Pflegel
+
+---
+
+## Laravel Framework
+
+Dieses Projekt basiert auf dem Laravel Framework.
+
+Laravel ist ein modernes PHP-Framework für Webanwendungen und bietet:
+
+* elegantes Routing
+* Eloquent ORM für Datenbankzugriffe
+* Blade Template Engine
+* Migrationen und Seeding
+* integrierte Sicherheitsmechanismen
+
+Weitere Informationen:
+https://laravel.com
