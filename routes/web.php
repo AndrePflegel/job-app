@@ -7,5 +7,5 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/jobs', [JobListingController::class, 'index']);
-Route::get('/jobs/{id}', [JobListingController::class, 'show']);
+Route::get('/jobs', [JobListingController::class, 'index'])->name('jobs.index');
+Route::get('/jobs/{id}', [JobListingController::class, 'show'])->name('jobs.show');

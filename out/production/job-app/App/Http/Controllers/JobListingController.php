@@ -8,7 +8,7 @@ class JobListingController extends Controller
 {
     public function index()
     {
-        $jobs = JobListing::with('company', 'category', 'user')->get();
+        $jobs = JobListing::with('company', 'category', 'user')->paginate(10);
 
         return view('jobs.index', compact('jobs'));
     }

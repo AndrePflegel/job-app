@@ -1,23 +1,29 @@
 @extends('layouts.app')
 
 @section('content')
+<h1 class="page-title">Jobanzeigen</h1>
 
-<h1>Jobanzeigen</h1>
+@forelse($jobs as $job)
+<div class="job-card">
+    <h2>
+        <a href="{{ route('jobs.show', $job->id) }}">
+            {{ $job->title }}
+        </a>
+    </h2>
 
-@foreach($jobs as $job)
-    <div style="margin-bottom: 20px; padding: 15px; border: 1px solid #ccc;">
-        <h2>
-            <a href="/jobs/{{ $job->id }}">{{ $job->title }}</a>
-        </h2>
+    <p>{{ $job->description }}</p>
 
-        <p>{{ $job->description }}</p>
+    <p><strong>Firma:</strong> {{ $job->company->name }}</p>
+    <p><strong>Kategorie:</strong> {{ $job->category->name }}</p>
+    <p><strong>Ort:</strong> {{ $job->location }}</p>
+    <p><strong>Gehalt:</strong> {{ $job->salary }}</p>
+    <p><strong>Erstellt von:</strong> {{ $job->user->name }}</p>
+</div>
+@empty
+<p>Keine Jobanzeigen gefunden.</p>
+@endforelse
 
-        <p><strong>Firma:</strong> {{ $job->company->name }}</p>
-        <p><strong>Kategorie:</strong> {{ $job->category->name }}</p>
-        <p><strong>Ort:</strong> {{ $job->location }}</p>
-        <p><strong>Gehalt:</strong> {{ $job->salary }}</p>
-        <p><strong>Erstellt von:</strong> {{ $job->user->name }}</p>
-    </div>
-@endforeach
-
+<div class="pagination">
+    {{ $jobs->links() }}
+</div>
 @endsection
