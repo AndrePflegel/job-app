@@ -7,26 +7,45 @@ use App\Models\User;
 use App\Models\Company;
 use App\Models\Category;
 use App\Models\JobListing;
+use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
-        // User
-        User::factory()->create([
+        // ===== TEST-ACCOUNTS =====
+
+        User::create([
             'name' => 'Admin',
             'email' => 'admin@test.de',
-            'password' => bcrypt('password'),
+            'password' => Hash::make('password'),
             'role' => 'admin',
         ]);
 
-        // Companies
-        Company::factory(5)->create();
+        User::create([
+            'name' => 'User',
+            'email' => 'user@test.de',
+            'password' => Hash::make('password'),
+            'role' => 'user',
+        ]);
 
-        // Categories
+        User::create([
+            'name' => 'Visitor',
+            'email' => 'visitor@test.de',
+            'password' => Hash::make('password'),
+            'role' => 'visitor',
+        ]);
+
+        // ===== FAKE DATEN =====
+
+        Company::factory(5)->create();
         Category::factory(5)->create();
 
-        // Jobs
-        JobListing::factory(20)->create();
+        // Jobs gehören zu Usern → wir erstellen zusätzliche normale User
+        User::factory(5)->create()->each(function ($user) {
+            JobListing::factory(4)->create([
+                'user_id' => $user->id,
+            ]);
+        });
     }
 }

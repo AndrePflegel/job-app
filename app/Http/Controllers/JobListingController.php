@@ -45,9 +45,10 @@ class JobListingController extends Controller
             'user_id' => 'required|exists:users,id',
         ]);
 
-        JobListing::create($validated);
+        $job = JobListing::create($validated);
 
-        return redirect()->route('jobs.index')->with('success', 'Jobanzeige erfolgreich erstellt.');
+        return redirect($request->input('return', route('jobs.show', $job->id)))
+            ->with('success', 'Jobanzeige erfolgreich erstellt.');
     }
 
     public function edit($id)
@@ -81,12 +82,12 @@ class JobListingController extends Controller
             ->with('success', 'Jobanzeige erfolgreich aktualisiert.');
     }
 
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
         $job = JobListing::findOrFail($id);
         $job->delete();
 
-        return redirect(request('return', route('jobs.index')))
+        return redirect($request->input('return', route('jobs.index')))
             ->with('success', 'Jobanzeige erfolgreich gelöscht.');
     }
 }

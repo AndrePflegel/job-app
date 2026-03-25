@@ -12,6 +12,22 @@
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const currentUrl = window.location.pathname + window.location.search;
+
+        if (sessionStorage.getItem('jobs_index_url') === currentUrl) {
+            const savedScrollPosition = sessionStorage.getItem('jobs_index_scroll');
+
+            if (savedScrollPosition !== null) {
+                window.scrollTo({
+                    top: parseInt(savedScrollPosition, 10),
+                    behavior: 'auto'
+                });
+            }
+        }
+    });
+</script>
 <body class="font-sans antialiased">
 <div class="min-h-screen bg-gray-100 dark:bg-gray-900">
     @include('layouts.navigation')

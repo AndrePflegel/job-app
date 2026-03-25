@@ -18,7 +18,8 @@
 @forelse($jobs as $job)
 <div class="job-card">
     <h2>
-        <a href="{{ route('jobs.show', ['job' => $job->id, 'return' => request()->fullUrl()]) }}">
+        <a href="{{ route('jobs.show', ['job' => $job->id, 'return' => request()->fullUrl()]) }}"
+           onclick="sessionStorage.setItem('jobs_index_url', window.location.pathname + window.location.search); sessionStorage.setItem('jobs_index_scroll', window.scrollY);">
             {{ $job->title }}
         </a>
     </h2>
@@ -32,10 +33,17 @@
     <p><strong>Erstellt von:</strong> {{ $job->user->name }}</p>
 
     <div class="action-row">
-        <a class="btn btn-secondary" href="{{ route('jobs.show', ['job' => $job->id, 'return' => request()->fullUrl()]) }}">Ansehen</a>
-
+        <a class="btn btn-secondary"
+           href="{{ route('jobs.show', ['job' => $job->id, 'return' => request()->fullUrl()]) }}"
+           onclick="sessionStorage.setItem('jobs_index_url', window.location.pathname + window.location.search); sessionStorage.setItem('jobs_index_scroll', window.scrollY);">
+            Ansehen
+        </a>
         @auth
-        <a class="btn btn-primary" href="{{ route('jobs.edit', ['job' => $job->id, 'return' => request()->fullUrl()]) }}">Bearbeiten</a>
+        <a class="btn btn-primary"
+           href="{{ route('jobs.edit', ['job' => $job->id, 'return' => request()->fullUrl()]) }}"
+           onclick="sessionStorage.setItem('jobs_index_url', window.location.pathname + window.location.search); sessionStorage.setItem('jobs_index_scroll', window.scrollY);">
+            Bearbeiten
+        </a>
 
         <form class="inline-form" action="{{ route('jobs.destroy', ['job' => $job->id]) }}" method="POST" onsubmit="return confirm('Möchtest du diese Jobanzeige wirklich löschen?');">
             @csrf

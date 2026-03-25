@@ -18,6 +18,7 @@
     <form action="{{ route('jobs.update', $job->id) }}" method="POST">
         @csrf
         @method('PUT')
+        <input type="hidden" name="return" value="{{ request('return', route('jobs.show', $job->id)) }}">
 
         <div style="margin-bottom: 15px;">
             <label for="title"><strong>Titel</strong></label><br>
@@ -79,13 +80,13 @@
     </form>
 
     <div class="action-row">
-        <a class="btn btn-secondary" href="{{ route('jobs.show', $job->id) }}">Ansehen</a>
+        <a class="btn btn-secondary" href="{{ route('jobs.show', ['job' => $job->id, 'return' => request('return', route('jobs.index'))]) }}">Ansehen</a>
 
-        <form class="inline-form" action="{{ route('jobs.destroy', $job->id) }}" method="POST" onsubmit="return confirm('Möchtest du diese Jobanzeige wirklich löschen?');">
+        <form class="inline-form" action="{{ route('jobs.destroy', ['job' => $job->id]) }}" method="POST" onsubmit="return confirm('Möchtest du diese Jobanzeige wirklich löschen?');">
             @csrf
             @method('DELETE')
             <button class="btn btn-danger" type="submit">Löschen</button>
-            <input type="hidden" name="return" value="{{ request('return', request()->fullUrl()) }}">
+            <input type="hidden" name="return" value="{{ request('return', route('jobs.index')) }}">
         </form>
 
         <a class="btn btn-secondary" href="{{ request('return', route('jobs.index')) }}">Zurück zur Liste</a>

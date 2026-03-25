@@ -17,6 +17,7 @@
 <div class="job-card">
     <form action="{{ route('jobs.store') }}" method="POST">
         @csrf
+        <input type="hidden" name="return" value="{{ request('return', route('jobs.index')) }}">
 
         <div style="margin-bottom: 15px;">
             <label for="title"><strong>Titel</strong></label><br>

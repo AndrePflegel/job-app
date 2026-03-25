@@ -129,6 +129,26 @@ Aktueller Stand:
 - Navigation für Gäste und eingeloggte Benutzer getrennt
 - bestehende Job-Views optisch wieder an das Projektlayout angebunden
 
+## Benutzerfreundlichkeit
+
+Die Anwendung merkt sich beim Navigieren aus der Jobliste:
+
+- aktuelle Seite (Pagination)
+- Scroll-Position
+
+Beim Zurückkehren zur Übersicht wird die vorherige Position wiederhergestellt,
+sodass der Nutzer direkt weiterarbeiten kann.
+
+## Testdaten
+
+Für die lokale Entwicklung werden folgende Test-Accounts angelegt:
+
+- admin@test.de (Admin)
+- user@test.de (User)
+- visitor@test.de (Visitor)
+
+Passwort für alle: password
+
 ## Autor
 
 Andre Pflegel
