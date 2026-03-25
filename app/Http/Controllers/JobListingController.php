@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Cache;
 use App\Models\Category;
 use App\Models\Company;
 use App\Models\JobListing;
@@ -14,17 +15,21 @@ class JobListingController extends Controller
         $companies = Company::orderBy('name')->get();
         $categories = Category::orderBy('name')->get();
 
-        $query = JobListing::with('company', 'category', 'user');
+        $cacheKey = 'jobs_' . md5(json_encode($request->all()));
 
-        if ($request->filled('company_id')) {
-            $query->where('company_id', $request->company_id);
-        }
+        $jobs = Cache::remember($cacheKey, 60, function () use ($request) {
+            $query = JobListing::with('company', 'category', 'user');
 
-        if ($request->filled('category_id')) {
-            $query->where('category_id', $request->category_id);
-        }
+            if ($request->filled('company_id')) {
+                $query->where('company_id', $request->company_id);
+            }
 
-        $jobs = $query->paginate(10)->withQueryString();
+            if ($request->filled('category_id')) {
+                $query->where('category_id', $request->category_id);
+            }
+
+            return $query->paginate(10)->withQueryString();
+        });
 
         return view('jobs.index', compact('jobs', 'companies', 'categories'));
     }
@@ -38,11 +43,7 @@ class JobListingController extends Controller
 
     public function create()
     {
-        $user = auth()->user();
-
-        if (!$user || !$user->canCreateJobs()) {
-            abort(403, 'Du hast keine Berechtigung, Jobs zu erstellen.');
-        }
+        $this->authorize('create', JobListing::class);
 
         $companies = Company::orderBy('name')->get();
         $categories = Category::orderBy('name')->get();
@@ -52,11 +53,7 @@ class JobListingController extends Controller
 
     public function store(Request $request)
     {
-        $user = auth()->user();
-
-        if (!$user || !$user->canCreateJobs()) {
-            abort(403, 'Du hast keine Berechtigung, Jobs zu erstellen.');
-        }
+        $this->authorize('create', JobListing::class);
 
         $validated = $request->validate([
             'title' => 'required|string|max:255',
@@ -67,9 +64,11 @@ class JobListingController extends Controller
             'category_id' => 'required|exists:categories,id',
         ]);
 
-        $validated['user_id'] = $user->id;
+        $validated['user_id'] = auth()->id();
 
         $job = JobListing::create($validated);
+
+        Cache::flush();
 
         return redirect($request->input('return', route('jobs.show', $job->id)))
             ->with('success', 'Jobanzeige erfolgreich erstellt.');
@@ -77,12 +76,8 @@ class JobListingController extends Controller
 
     public function edit($id)
     {
-        $user = auth()->user();
         $job = JobListing::findOrFail($id);
-
-        if (!$user || !$user->canManageJob($job)) {
-            abort(403, 'Du darfst diese Jobanzeige nicht bearbeiten.');
-        }
+        $this->authorize('update', $job);
 
         $companies = Company::orderBy('name')->get();
         $categories = Category::orderBy('name')->get();
@@ -92,12 +87,8 @@ class JobListingController extends Controller
 
     public function update(Request $request, $id)
     {
-        $user = auth()->user();
         $job = JobListing::findOrFail($id);
-
-        if (!$user || !$user->canManageJob($job)) {
-            abort(403, 'Du darfst diese Jobanzeige nicht bearbeiten.');
-        }
+        $this->authorize('update', $job);
 
         $validated = $request->validate([
             'title' => 'required|string|max:255',
@@ -110,22 +101,33 @@ class JobListingController extends Controller
 
         $job->update($validated);
 
+        Cache::flush();
+
         return redirect($request->input('return', route('jobs.show', $job->id)))
             ->with('success', 'Jobanzeige erfolgreich aktualisiert.');
     }
 
     public function destroy(Request $request, $id)
     {
-        $user = auth()->user();
         $job = JobListing::findOrFail($id);
-
-        if (!$user || !$user->canManageJob($job)) {
-            abort(403, 'Du darfst diese Jobanzeige nicht löschen.');
-        }
+        $this->authorize('delete', $job);
 
         $job->delete();
+
+        Cache::flush();
 
         return redirect($request->input('return', route('jobs.index')))
             ->with('success', 'Jobanzeige erfolgreich gelöscht.');
     }
+
+    public function myJobs()
+    {
+        $jobs = JobListing::where('user_id', auth()->id())
+            ->with('company', 'category')
+            ->latest()
+            ->get();
+
+        return view('jobs.my-jobs', compact('jobs'));
+    }
+
 }

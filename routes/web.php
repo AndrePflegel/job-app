@@ -36,4 +36,8 @@ Route::middleware('auth')->group(function () {
 
 Route::get('/jobs/{job}', [JobListingController::class, 'show'])->name('jobs.show');
 
+Route::get('/my-jobs', [JobListingController::class, 'myJobs'])
+    ->name('jobs.my')
+    ->middleware('auth');
+
 require __DIR__.'/auth.php';

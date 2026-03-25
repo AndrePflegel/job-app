@@ -65,6 +65,47 @@ Screenshots zeigen die wichtigsten Funktionen.
 
 ### Jobanzeigen
 
+* Übersicht aller Jobanzeigen
+* Detailansicht einzelner Jobs
+* Erstellung, Bearbeitung und Löschung (rollenabhängig)
+
+### Benutzerrollen & Rechte
+
+* Gast: nur Ansicht der Inhalte
+* Visitor (eingeloggt): gleiche Rechte wie Gast
+* User: eigene Jobs erstellen, bearbeiten und löschen
+* Admin: vollständige Kontrolle über alle Inhalte
+
+### Firmen & Kategorien (Admin)
+
+* Verwaltung von Firmen (Companies)
+* Verwaltung von Kategorien (Categories)
+* Löschung nur möglich, wenn keine abhängigen Jobs existieren
+
+### Filter & Suche
+
+* Filter nach Firma
+* Filter nach Kategorie
+* Kombination mehrerer Filter möglich
+* Filter bleiben bei Pagination erhalten
+
+### Benutzerfreundlichkeit
+
+* Pagination für große Datenmengen
+* Rücksprung zur vorherigen Seite nach Aktionen
+* Wiederherstellung der Scroll-Position
+
+### Performance
+
+* Caching der Jobliste zur Reduzierung von Datenbankabfragen
+
+### Persönliche Funktionen
+
+* „Meine Jobs“: Übersicht aller eigenen Jobanzeigen für eingeloggte User
+
+
+### Jobanzeigen
+
 * Übersicht aller Jobs
 * Detailansicht
 * Erstellung, Bearbeitung und Löschung (rollenabhängig)
@@ -270,6 +311,12 @@ Screenshots demonstrate the main functionality.
 * Admin CRUD for companies & categories
 * Filtering system
 * Pagination with state handling
+* 
+### Performance
+* Query caching for job listings
+
+### Personal Features
+* "My Jobs" dashboard for managing own listings
 
 ---
 
