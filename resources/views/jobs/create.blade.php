@@ -21,27 +21,27 @@
 
         <div style="margin-bottom: 15px;">
             <label for="title"><strong>Titel</strong></label><br>
-            <input type="text" name="title" id="title" value="{{ old('title') }}" style="width: 100%; padding: 10px;">
+            <input type="text" name="title" id="title" value="{{ old('title') }}">
         </div>
 
         <div style="margin-bottom: 15px;">
             <label for="description"><strong>Beschreibung</strong></label><br>
-            <textarea name="description" id="description" rows="6" style="width: 100%; padding: 10px;">{{ old('description') }}</textarea>
+            <textarea name="description" id="description" rows="6">{{ old('description') }}</textarea>
         </div>
 
         <div style="margin-bottom: 15px;">
             <label for="location"><strong>Ort</strong></label><br>
-            <input type="text" name="location" id="location" value="{{ old('location') }}" style="width: 100%; padding: 10px;">
+            <input type="text" name="location" id="location" value="{{ old('location') }}">
         </div>
 
         <div style="margin-bottom: 15px;">
             <label for="salary"><strong>Gehalt</strong></label><br>
-            <input type="number" step="0.01" name="salary" id="salary" value="{{ old('salary') }}" style="width: 100%; padding: 10px;">
+            <input type="number" step="0.01" name="salary" id="salary" value="{{ old('salary') }}">
         </div>
 
         <div style="margin-bottom: 15px;">
             <label for="company_id"><strong>Firma</strong></label><br>
-            <select name="company_id" id="company_id" style="width: 100%; padding: 10px;">
+            <select name="company_id" id="company_id">
                 <option value="">Bitte auswählen</option>
                 @foreach ($companies as $company)
                 <option value="{{ $company->id }}" @selected(old('company_id') == $company->id)>
@@ -51,25 +51,13 @@
             </select>
         </div>
 
-        <div style="margin-bottom: 15px;">
+        <div style="margin-bottom: 20px;">
             <label for="category_id"><strong>Kategorie</strong></label><br>
-            <select name="category_id" id="category_id" style="width: 100%; padding: 10px;">
+            <select name="category_id" id="category_id">
                 <option value="">Bitte auswählen</option>
                 @foreach ($categories as $category)
                 <option value="{{ $category->id }}" @selected(old('category_id') == $category->id)>
                 {{ $category->name }}
-                </option>
-                @endforeach
-            </select>
-        </div>
-
-        <div style="margin-bottom: 20px;">
-            <label for="user_id"><strong>Erstellt von</strong></label><br>
-            <select name="user_id" id="user_id" style="width: 100%; padding: 10px;">
-                <option value="">Bitte auswählen</option>
-                @foreach ($users as $user)
-                <option value="{{ $user->id }}" @selected(old('user_id') == $user->id)>
-                {{ $user->name }}
                 </option>
                 @endforeach
             </select>

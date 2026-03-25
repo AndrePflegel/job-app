@@ -18,9 +18,19 @@
                     </x-nav-link>
 
                     @auth
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                        {{ __('Dashboard') }}
+                    @if (auth()->user()->isAdmin())
+                    <x-nav-link :href="route('companies.index')" :active="request()->routeIs('companies.*')">
+                        {{ __('Firmen') }}
                     </x-nav-link>
+                    @endif
+                    @endauth
+
+                    @auth
+                    @if (auth()->user()->isAdmin())
+                    <x-nav-link :href="route('categories.index')" :active="request()->routeIs('categories.*')">
+                        {{ __('Kategorien') }}
+                    </x-nav-link>
+                    @endif
                     @endauth
                 </div>
             </div>
@@ -91,9 +101,19 @@
             </x-responsive-nav-link>
 
             @auth
-            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                {{ __('Dashboard') }}
+            @if (auth()->user()->isAdmin())
+            <x-responsive-nav-link :href="route('companies.index')" :active="request()->routeIs('companies.*')">
+                {{ __('Firmen') }}
             </x-responsive-nav-link>
+            @endif
+            @endauth
+
+            @auth
+            @if (auth()->user()->isAdmin())
+            <x-responsive-nav-link :href="route('categories.index')" :active="request()->routeIs('categories.*')">
+                {{ __('Kategorien') }}
+            </x-responsive-nav-link>
+            @endif
             @endauth
         </div>
 

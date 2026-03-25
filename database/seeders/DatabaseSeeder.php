@@ -2,27 +2,25 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
-use App\Models\User;
-use App\Models\Company;
 use App\Models\Category;
+use App\Models\Company;
 use App\Models\JobListing;
+use App\Models\User;
+use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
-        // ===== TEST-ACCOUNTS =====
-
-        User::create([
+        $admin = User::create([
             'name' => 'Admin',
             'email' => 'admin@test.de',
             'password' => Hash::make('password'),
             'role' => 'admin',
         ]);
 
-        User::create([
+        $user = User::create([
             'name' => 'User',
             'email' => 'user@test.de',
             'password' => Hash::make('password'),
@@ -36,16 +34,19 @@ class DatabaseSeeder extends Seeder
             'role' => 'visitor',
         ]);
 
-        // ===== FAKE DATEN =====
+        $companies = Company::factory(5)->create();
+        $categories = Category::factory(5)->create();
 
-        Company::factory(5)->create();
-        Category::factory(5)->create();
+        JobListing::factory(5)->create([
+            'user_id' => $admin->id,
+            'company_id' => $companies->random()->id,
+            'category_id' => $categories->random()->id,
+        ]);
 
-        // Jobs gehören zu Usern → wir erstellen zusätzliche normale User
-        User::factory(5)->create()->each(function ($user) {
-            JobListing::factory(4)->create([
-                'user_id' => $user->id,
-            ]);
-        });
+        JobListing::factory(5)->create([
+            'user_id' => $user->id,
+            'company_id' => $companies->random()->id,
+            'category_id' => $categories->random()->id,
+        ]);
     }
 }

@@ -21,6 +21,7 @@
 
     <div class="action-row">
         @auth
+        @if (auth()->user()->canManageJob($job))
         <a class="btn btn-primary" href="{{ route('jobs.edit', ['job' => $job->id, 'return' => request('return', request()->fullUrl())]) }}">Bearbeiten</a>
 
         <form class="inline-form" action="{{ route('jobs.destroy', ['job' => $job->id]) }}" method="POST" onsubmit="return confirm('Möchtest du diese Jobanzeige wirklich löschen?');">
@@ -29,6 +30,7 @@
             <button class="btn btn-danger" type="submit">Löschen</button>
             <input type="hidden" name="return" value="{{ request('return', request()->fullUrl()) }}">
         </form>
+        @endif
         @endauth
 
         <a class="btn btn-secondary" href="{{ request('return', route('jobs.index')) }}">Zurück</a>

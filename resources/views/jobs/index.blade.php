@@ -3,10 +3,49 @@
 @section('content')
 <h1 class="page-title">Jobanzeigen</h1>
 
+<div class="job-card" style="margin-bottom: 24px;">
+    <form action="{{ route('jobs.index') }}" method="GET">
+        <div style="display: flex; gap: 16px; flex-wrap: wrap; align-items: end;">
+            <div style="flex: 1; min-width: 220px;">
+                <label for="company_id"><strong>Firma</strong></label><br>
+                <select name="company_id" id="company_id">
+                    <option value="">Alle Firmen</option>
+                    @foreach ($companies as $company)
+                    <option value="{{ $company->id }}" @selected(request('company_id') == $company->id)>
+                    {{ $company->name }}
+                    </option>
+                    @endforeach
+                </select>
+            </div>
+
+            <div style="flex: 1; min-width: 220px;">
+                <label for="category_id"><strong>Kategorie</strong></label><br>
+                <select name="category_id" id="category_id">
+                    <option value="">Alle Kategorien</option>
+                    @foreach ($categories as $category)
+                    <option value="{{ $category->id }}" @selected(request('category_id') == $category->id)>
+                    {{ $category->name }}
+                    </option>
+                    @endforeach
+                </select>
+            </div>
+
+            <div class="action-row" style="margin-top: 0;">
+                <button type="submit" class="btn btn-primary">Filtern</button>
+                <a class="btn btn-secondary" href="{{ route('jobs.index') }}">Zurücksetzen</a>
+            </div>
+        </div>
+    </form>
+</div>
+
 @auth
+@if (auth()->user()->canCreateJobs())
 <p style="margin-bottom: 20px;">
-    <a href="{{ route('jobs.create') }}">+ Neue Jobanzeige erstellen</a>
+    <a class="btn btn-primary" href="{{ route('jobs.create') }}">
+        + Neue Jobanzeige erstellen
+    </a>
 </p>
+@endif
 @endauth
 
 @if (session('success'))
@@ -38,7 +77,9 @@
            onclick="sessionStorage.setItem('jobs_index_url', window.location.pathname + window.location.search); sessionStorage.setItem('jobs_index_scroll', window.scrollY);">
             Ansehen
         </a>
+
         @auth
+        @if (auth()->user()->canManageJob($job))
         <a class="btn btn-primary"
            href="{{ route('jobs.edit', ['job' => $job->id, 'return' => request()->fullUrl()]) }}"
            onclick="sessionStorage.setItem('jobs_index_url', window.location.pathname + window.location.search); sessionStorage.setItem('jobs_index_scroll', window.scrollY);">
@@ -49,8 +90,9 @@
             @csrf
             @method('DELETE')
             <button class="btn btn-danger" type="submit">Löschen</button>
-            <input type="hidden" name="return" value="{{ request('return', request()->fullUrl()) }}">
+            <input type="hidden" name="return" value="{{ request()->fullUrl() }}">
         </form>
+        @endif
         @endauth
     </div>
 </div>

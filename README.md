@@ -139,6 +139,25 @@ Die Anwendung merkt sich beim Navigieren aus der Jobliste:
 Beim Zurückkehren zur Übersicht wird die vorherige Position wiederhergestellt,
 sodass der Nutzer direkt weiterarbeiten kann.
 
+## Admin-Verwaltung
+
+Admins können zusätzlich Stammdaten verwalten:
+
+- Firmen anlegen, bearbeiten und löschen
+- Firmen können nur gelöscht werden, wenn keine Jobs mehr darauf verweisen
+
+Firmen und Kategorien bleiben für alle Rollen als Anzeige- und Filterwerte nutzbar.
+
+## Filterfunktion
+
+Die öffentliche Jobübersicht kann nach folgenden Kriterien gefiltert werden:
+
+- Firma
+- Kategorie
+
+Die Filter sind für alle Rollen nutzbar.
+Die Auswahl bleibt bei Pagination erhalten.
+
 ## Testdaten
 
 Für die lokale Entwicklung werden folgende Test-Accounts angelegt:
