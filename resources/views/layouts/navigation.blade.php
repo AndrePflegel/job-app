@@ -5,8 +5,9 @@
             <div class="flex">
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
-                    <a href="{{ route('jobs.index') }}">
-                        <x-application-logo class="block h-9 w-auto fill-current text-gray-800 dark:text-gray-200" />
+                    <a href="{{ route('jobs.index') }}" class="app-brand">
+                        <span class="app-brand-mark">tm</span>
+                        <span class="app-brand-text">JobBoard</span>
                     </a>
                 </div>
 
