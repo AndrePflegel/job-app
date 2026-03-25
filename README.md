@@ -101,6 +101,13 @@ Die Anwendung bildet ein vollständiges CRUD-System ab.
 
 ---
 
+## Aktueller Entwicklungsstand
+
+- Rollenmodell für Benutzer vorbereitet (`admin`, `user`)
+- `role`-Spalte in der Benutzerverwaltung vorhanden
+- Admin-Testnutzer im Seeder angelegt
+- User-Modell um Rollen-Hilfsmethoden erweitert
+
 ## Autor
 
 Andre Pflegel

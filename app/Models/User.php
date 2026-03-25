@@ -53,4 +53,14 @@ class User extends Authenticatable
     {
         return $this->hasMany(JobListing::class);
     }
+
+    public function isAdmin(): bool
+    {
+        return $this->role === 'admin';
+    }
+
+    public function isInternalUser(): bool
+    {
+        return in_array($this->role, ['admin', 'user']);
+    }
 }
