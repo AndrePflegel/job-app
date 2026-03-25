@@ -108,6 +108,18 @@ Die Anwendung bildet ein vollständiges CRUD-System ab.
 - Admin-Testnutzer im Seeder angelegt
 - User-Modell um Rollen-Hilfsmethoden erweitert
 
+## Authentifizierung
+
+Laravel Breeze wurde als Grundlage für die Authentifizierung eingebunden.
+
+Der aktuelle Stand:
+- Login- und Registrierungslogik wurde generiert
+- Migrationen sind vorhanden
+- Frontend-Build über Node.js / npm wird lokal eingerichtet
+
+Hinweis:
+Die Standard-Registrierung von Breeze wird im weiteren Verlauf noch an das Firmenkonzept angepasst.
+
 ## Autor
 
 Andre Pflegel

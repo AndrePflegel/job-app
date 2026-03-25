@@ -1,18 +1,20 @@
 <?php
 
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\JobListingController;
 
 Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/jobs', [JobListingController::class, 'index'])->name('jobs.index');
-Route::get('/jobs/create', [JobListingController::class, 'create'])->name('jobs.create');
-Route::post('/jobs', [JobListingController::class, 'store'])->name('jobs.store');
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::get('/jobs/{id}/edit', [JobListingController::class, 'edit'])->name('jobs.edit');
-Route::put('/jobs/{id}', [JobListingController::class, 'update'])->name('jobs.update');
-Route::get('/jobs/{id}', [JobListingController::class, 'show'])->name('jobs.show');
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
 
-Route::delete('/jobs/{id}', [JobListingController::class, 'destroy'])->name('jobs.destroy');
+require __DIR__.'/auth.php';
