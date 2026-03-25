@@ -1,3 +1,141 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+body {
+    margin: 0;
+    font-family: Figtree, Arial, sans-serif;
+    color: #1f2937;
+}
+
+.page-container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 32px 20px 48px;
+}
+
+.page-title {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 24px;
+    color: #111827;
+}
+
+.job-card {
+    background: #ffffff;
+    border: 1px solid #dbe4ee;
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 14px rgba(15, 23, 42, 0.06);
+}
+
+.job-card h1,
+.job-card h2 {
+    margin-top: 0;
+    margin-bottom: 14px;
+    color: #0f172a;
+}
+
+.job-card h2 a {
+    color: #0f172a;
+    text-decoration: none;
+}
+
+.job-card h2 a:hover {
+    text-decoration: underline;
+}
+
+.job-card p {
+    margin: 10px 0;
+    line-height: 1.6;
+    color: #334155;
+}
+
+.action-row {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-top: 20px;
+}
+
+.inline-form {
+    display: inline;
+}
+
+.btn {
+    display: inline-block;
+    padding: 10px 16px;
+    border-radius: 8px;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    font-size: 0.95rem;
+    font-weight: 600;
+    transition: 0.2s ease;
+}
+
+.btn-primary {
+    background: #2563eb;
+    color: #ffffff;
+}
+
+.btn-primary:hover {
+    background: #1d4ed8;
+}
+
+.btn-secondary {
+    background: #e5e7eb;
+    color: #111827;
+}
+
+.btn-secondary:hover {
+    background: #d1d5db;
+}
+
+.btn-danger {
+    background: #dc2626;
+    color: #ffffff;
+}
+
+.btn-danger:hover {
+    background: #b91c1c;
+}
+
+.pagination {
+    margin-top: 28px;
+}
+
+input[type="text"],
+input[type="number"],
+select,
+textarea {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    box-sizing: border-box;
+    background: #ffffff;
+    color: #111827;
+}
+
+label {
+    display: inline-block;
+    margin-bottom: 6px;
+    color: #0f172a;
+}
+
+@media (max-width: 640px) {
+    .page-container {
+        padding: 20px 14px 32px;
+    }
+
+    .job-card {
+        padding: 18px;
+    }
+
+    .page-title {
+        font-size: 1.6rem;
+    }
+}

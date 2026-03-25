@@ -3,9 +3,11 @@
 @section('content')
 <h1 class="page-title">Jobanzeigen</h1>
 
+@auth
 <p style="margin-bottom: 20px;">
     <a href="{{ route('jobs.create') }}">+ Neue Jobanzeige erstellen</a>
 </p>
+@endauth
 
 @if (session('success'))
 <div style="background: #e6ffed; color: #1f6b3b; padding: 15px; margin-bottom: 20px; border: 1px solid #a6d8b8;">
@@ -16,7 +18,7 @@
 @forelse($jobs as $job)
 <div class="job-card">
     <h2>
-        <a href="{{ route('jobs.show', ['id' => $job->id, 'return' => request()->fullUrl()]) }}">
+        <a href="{{ route('jobs.show', ['job' => $job->id, 'return' => request()->fullUrl()]) }}">
             {{ $job->title }}
         </a>
     </h2>
@@ -28,15 +30,20 @@
     <p><strong>Ort:</strong> {{ $job->location }}</p>
     <p><strong>Gehalt:</strong> {{ $job->salary }}</p>
     <p><strong>Erstellt von:</strong> {{ $job->user->name }}</p>
+
     <div class="action-row">
-        <a class="btn btn-secondary" href="{{ route('jobs.show', ['id' => $job->id, 'return' => request()->fullUrl()]) }}">Ansehen</a>
-        <a class="btn btn-primary" href="{{ route('jobs.edit', ['id' => $job->id, 'return' => request()->fullUrl()]) }}">Bearbeiten</a>
-        <form class="inline-form" action="{{ route('jobs.destroy', $job->id) }}" method="POST" onsubmit="return confirm('Möchtest du diese Jobanzeige wirklich löschen?');">
+        <a class="btn btn-secondary" href="{{ route('jobs.show', ['job' => $job->id, 'return' => request()->fullUrl()]) }}">Ansehen</a>
+
+        @auth
+        <a class="btn btn-primary" href="{{ route('jobs.edit', ['job' => $job->id, 'return' => request()->fullUrl()]) }}">Bearbeiten</a>
+
+        <form class="inline-form" action="{{ route('jobs.destroy', ['job' => $job->id]) }}" method="POST" onsubmit="return confirm('Möchtest du diese Jobanzeige wirklich löschen?');">
             @csrf
             @method('DELETE')
             <button class="btn btn-danger" type="submit">Löschen</button>
             <input type="hidden" name="return" value="{{ request('return', request()->fullUrl()) }}">
         </form>
+        @endauth
     </div>
 </div>
 @empty

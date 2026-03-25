@@ -120,6 +120,15 @@ Der aktuelle Stand:
 Hinweis:
 Die Standard-Registrierung von Breeze wird im weiteren Verlauf noch an das Firmenkonzept angepasst.
 
+## Frontend-Integration
+
+Nach der Einbindung von Laravel Breeze wurde das bestehende Blade-Layout wieder an die Job-App angepasst.
+
+Aktueller Stand:
+- öffentliche Jobübersicht als Startseite
+- Navigation für Gäste und eingeloggte Benutzer getrennt
+- bestehende Job-Views optisch wieder an das Projektlayout angebunden
+
 ## Autor
 
 Andre Pflegel

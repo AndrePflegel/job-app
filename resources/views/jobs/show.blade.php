@@ -20,15 +20,16 @@
     <p><strong>Erstellt von:</strong> {{ $job->user->name }}</p>
 
     <div class="action-row">
-        <a class="btn btn-primary" href="{{ route('jobs.edit', ['id' => $job->id, 'return' => request('return', request()->fullUrl())]) }}">Bearbeiten</a>
+        @auth
+        <a class="btn btn-primary" href="{{ route('jobs.edit', ['job' => $job->id, 'return' => request('return', request()->fullUrl())]) }}">Bearbeiten</a>
 
-        <form class="inline-form" action="{{ route('jobs.destroy', $job->id) }}" method="POST" onsubmit="return confirm('Möchtest du diese Jobanzeige wirklich löschen?');">
+        <form class="inline-form" action="{{ route('jobs.destroy', ['job' => $job->id]) }}" method="POST" onsubmit="return confirm('Möchtest du diese Jobanzeige wirklich löschen?');">
             @csrf
             @method('DELETE')
             <button class="btn btn-danger" type="submit">Löschen</button>
             <input type="hidden" name="return" value="{{ request('return', request()->fullUrl()) }}">
         </form>
-
+        @endauth
 
         <a class="btn btn-secondary" href="{{ request('return', route('jobs.index')) }}">Zurück</a>
     </div>
