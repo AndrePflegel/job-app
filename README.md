@@ -1,4 +1,4 @@
-# JobBoard (Laravel Project)
+# JobBoard (Laravel Projekt)
 
 ![Laravel](https://img.shields.io/badge/Laravel-12-red)
 ![PHP](https://img.shields.io/badge/PHP-8-blue)
@@ -8,52 +8,49 @@
 
 # 🇩🇪 Deutsch
 
-## Beschreibung
+## 📌 Projektbeschreibung
 
-Diese Webanwendung ist eine Jobbörse zur Verwaltung und Darstellung von Stellenanzeigen.
+Diese Anwendung ist eine webbasierte Jobbörse zur Verwaltung und Darstellung von Stellenanzeigen.
 
-Die Anwendung kann **öffentlich genutzt werden (ohne Login)** und bietet zusätzlich ein **rollenbasiertes System** für erweiterte Funktionen.
+Die Plattform kann **öffentlich (ohne Login)** genutzt werden und bietet zusätzlich ein **rollenbasiertes Zugriffssystem** für interne Benutzer.
+
+Ziel des Projekts war es, eine **strukturierte, sichere und erweiterbare Laravel-Anwendung** zu entwickeln.
 
 ---
 
-## Key Features
+## 🚀 Features
 
 * Rollenbasiertes Zugriffssystem (Guest, Visitor, User, Admin)
 * CRUD-Funktionalität für Jobanzeigen
 * Admin-Verwaltung für Firmen und Kategorien
 * Filter nach Firma und Kategorie
 * Pagination mit Zustandserhalt
-* Saubere und übersichtliche Benutzeroberfläche
+* „Meine Jobs“-Bereich für eingeloggte User
+* Caching zur Performance-Optimierung
+* Vollständige Testabdeckung mit CI (GitHub Actions)
 
 ---
 
-## Demo
-
-Dieses Projekt ist für lokale Entwicklung gedacht.
-Screenshots zeigen die wichtigsten Funktionen.
-
----
-
-## Rollenmodell
+## 👥 Rollenmodell
 
 ### Gast (nicht eingeloggt)
 
-* Jobanzeigen ansehen
-* Filter nach Firma und Kategorie nutzen
+* Anzeigen von Jobanzeigen
+* Nutzung von Filtern
 
 ### Visitor (eingeloggt)
 
-* gleiche Funktionen wie Gast
-* Grundlage für zukünftige Features (z. B. gespeicherte Filter)
+* gleiche Rechte wie Gast
+* Grundlage für zukünftige Features
 
 ### User
 
-* eigene Jobanzeigen erstellen
-* eigene Jobanzeigen bearbeiten und löschen
+* eigene Jobs erstellen
+* eigene Jobs bearbeiten und löschen
 
 ### Admin
 
-* vollständige Kontrolle über alle Jobanzeigen
+* vollständige Kontrolle über alle Daten
 * Verwaltung von:
 
     * Firmen (Companies)
@@ -61,48 +58,7 @@ Screenshots zeigen die wichtigsten Funktionen.
 
 ---
 
-## Funktionen
-
-### Jobanzeigen
-
-* Übersicht aller Jobanzeigen
-* Detailansicht einzelner Jobs
-* Erstellung, Bearbeitung und Löschung (rollenabhängig)
-
-### Benutzerrollen & Rechte
-
-* Gast: nur Ansicht der Inhalte
-* Visitor (eingeloggt): gleiche Rechte wie Gast
-* User: eigene Jobs erstellen, bearbeiten und löschen
-* Admin: vollständige Kontrolle über alle Inhalte
-
-### Firmen & Kategorien (Admin)
-
-* Verwaltung von Firmen (Companies)
-* Verwaltung von Kategorien (Categories)
-* Löschung nur möglich, wenn keine abhängigen Jobs existieren
-
-### Filter & Suche
-
-* Filter nach Firma
-* Filter nach Kategorie
-* Kombination mehrerer Filter möglich
-* Filter bleiben bei Pagination erhalten
-
-### Benutzerfreundlichkeit
-
-* Pagination für große Datenmengen
-* Rücksprung zur vorherigen Seite nach Aktionen
-* Wiederherstellung der Scroll-Position
-
-### Performance
-
-* Caching der Jobliste zur Reduzierung von Datenbankabfragen
-
-### Persönliche Funktionen
-
-* „Meine Jobs“: Übersicht aller eigenen Jobanzeigen für eingeloggte User
-
+## 🧩 Funktionen im Detail
 
 ### Jobanzeigen
 
@@ -110,89 +66,92 @@ Screenshots zeigen die wichtigsten Funktionen.
 * Detailansicht
 * Erstellung, Bearbeitung und Löschung (rollenabhängig)
 
-### Firmen (Admin)
+### Filter & Suche
 
-* Firmen anlegen, bearbeiten und löschen
-* Löschung nur möglich, wenn keine Jobs zugeordnet sind
-
-### Kategorien (Admin)
-
-* Kategorien anlegen, bearbeiten und löschen
-
-### Filter
-
-* Filter nach:
-
-    * Firma
-    * Kategorie
-* Filter bleiben bei Pagination erhalten
+* Filter nach Firma
+* Filter nach Kategorie
+* kombinierbar
+* Zustand bleibt bei Pagination erhalten
 
 ### Benutzerfreundlichkeit
 
-* Pagination für große Datenmengen
+* Pagination bei großen Datenmengen
 * Rücksprung zur vorherigen Seite nach Aktionen
-* Wiederherstellung der Scroll-Position
+* Scroll-Position bleibt erhalten
+
+### Performance
+
+* Caching der Jobliste zur Reduzierung von Datenbankabfragen
 
 ---
 
-## Technologien
+## 🛠️ Technologien
 
-* PHP
+* PHP 8
 * Laravel Framework
 * Blade Templates
 * MySQL / MariaDB
 * HTML / CSS
+* GitHub Actions (CI/CD)
 
 ---
 
-## Datenbank
+## 🗄️ Datenbank
 
-Das Projekt wurde mit einer relationalen Datenbank entwickelt und getestet.
+Relationale Datenbank mit folgenden Haupttabellen:
 
-### Verwendet:
+* Users
+* Jobs
+* Companies
+* Categories
 
-* MySQL / MariaDB
+### Eigenschaften
 
-### Warum diese Datenbank?
-
-* weit verbreitet und gut dokumentiert
-* optimale Integration mit Laravel
-* ideal für relationale Daten (Jobs, Firmen, Kategorien, Benutzer)
-* einfache lokale Einrichtung
-
-### Konfiguration (.env)
-
-DB_CONNECTION=mysql
-DB_HOST=127.0.0.1
-DB_PORT=3306
-DB_DATABASE=job_app
-DB_USERNAME=root
-DB_PASSWORD=
-
-Migration:
-
-php artisan migrate
-
-Seeder:
-
-php artisan db:seed
+* Beziehungen zwischen Jobs, Firmen und Kategorien
+* Integritätsregeln (z. B. keine Löschung bei Abhängigkeiten)
+* Nutzung von Laravel Migrations
 
 ---
 
-## Installation
+## ⚙️ Installation
 
+```bash
 git clone https://github.com/AndrePflegel/job-app.git
 cd job-app
+
 composer install
 cp .env.example .env
 php artisan key:generate
+
 php artisan migrate
 php artisan db:seed
+
 php artisan serve
+```
 
 ---
 
-## Test-Accounts
+## 🧪 Tests & CI
+
+* Automatisierte Tests mit Laravel
+* GitHub Actions Pipeline
+* Tests laufen auf:
+
+    * PHP 8.2
+    * PHP 8.3
+    * PHP 8.4
+
+---
+
+## 🔐 Sicherheit
+
+* Passwort-Hashing
+* Rollenbasierte Zugriffskontrolle (Policies)
+* Schutz sensibler Dateien (.env, storage, vendor)
+
+---
+
+## 👤 Test-Accounts
 
 | Rolle   | E-Mail                                    | Passwort |
 | ------- | ----------------------------------------- | -------- |
@@ -202,224 +161,64 @@ php artisan serve
 
 ---
 
-## Sicherheit
+## 🔮 Erweiterungsmöglichkeiten
 
-* Passwörter werden sicher gehasht gespeichert
-* Rollenbasierte Zugriffskontrolle
-* sensible Dateien (.env, storage, vendor) ausgeschlossen
-
----
-
-## Screenshots
-
-### Jobübersicht
-
-Übersicht aller Jobanzeigen mit Filter nach Firma und Kategorie.
-![Job Overview](docs/screenshots/job-list.png)
-
-### Jobdetails
-
-Detailansicht einer einzelnen Jobanzeige.
-![Job Detail](docs/screenshots/job-detail.png)
-
-### Job erstellen
-
-Formular zur Erstellung einer neuen Jobanzeige.
-![Create Job](docs/screenshots/job-create.png)
-
-### Admin – Firmen
-
-Verwaltung von Firmen (CRUD).
-![Admin Companies](docs/screenshots/admin-companies.png)
-
-### Admin – Kategorien
-
-Verwaltung von Kategorien (CRUD).
-![Admin Categories](docs/screenshots/admin-categories.png)
-
----
-
-## Zukünftige Erweiterungen
-
-* Favoritenfunktion für Jobs
-* Erweiterte Suche (Keywords, Gehalt)
+* Favoritenfunktion
+* Erweiterte Suche (Keywords)
 * API-Anbindung
 * E-Mail-Benachrichtigungen
-* Verbesserte UI/UX
+* UI/UX Verbesserungen
 
 ---
 
 # 🇬🇧 English
 
-## Description
+## 📌 Description
 
-This web application is a job board for managing and displaying job listings.
+This project is a web-based job board application built with Laravel.
 
-The application can be used **publicly (without login)** and also provides a **role-based system** for extended functionality.
+It supports both:
 
----
-
-## Key Features
-
-* Role-based access control (Guest, Visitor, User, Admin)
-* CRUD operations for job listings
-* Admin management for companies and categories
-* Filtering by company and category
-* Pagination with state persistence
-* Clean and structured UI
+* public access (without login)
+* role-based internal management
 
 ---
 
-## Demo
+## 🚀 Features
 
-This project is intended for local development.
-Screenshots demonstrate the main functionality.
-
----
-
-## Roles
-
-### Guest (not logged in)
-
-* view job listings
-* use filters
-
-### Visitor (logged in)
-
-* same as guest
-* base for future features
-
-### User
-
-* create own jobs
-* edit and delete own jobs
-
-### Admin
-
-* full control over all jobs
-* manage:
-
-    * companies
-    * categories
-
----
-
-## Features
-
-* Job overview & detail page
-* Create / edit / delete jobs
-* Admin CRUD for companies & categories
+* Role-based access control
+* CRUD operations for jobs
+* Admin management (companies & categories)
 * Filtering system
-* Pagination with state handling
-* 
-### Performance
-* Query caching for job listings
-
-### Personal Features
-* "My Jobs" dashboard for managing own listings
+* Pagination with state persistence
+* CI pipeline with automated tests
 
 ---
 
-## Technologies
+## 🛠️ Tech Stack
 
-* PHP
-* Laravel
-* Blade
+* PHP / Laravel
+* Blade Templates
 * MySQL / MariaDB
-* HTML / CSS
+* GitHub Actions
 
 ---
 
-## Database
+## ⚙️ Setup
 
-The project uses a relational database.
-
-### Used:
-
-* MySQL / MariaDB
-
-### Setup
-
-Configured via .env file.
-
-Run:
-
-php artisan migrate
-php artisan db:seed
-
----
-
-## Installation
-
-git clone https://github.com/AndrePflegel/job-app.git
-cd job-app
+```bash
 composer install
 cp .env.example .env
 php artisan key:generate
 php artisan migrate
 php artisan db:seed
 php artisan serve
+```
 
 ---
 
-## Test Accounts
-
-| Role    | Email                                     | Password |
-| ------- | ----------------------------------------- | -------- |
-| Admin   | [admin@test.de](mailto:admin@test.de)     | password |
-| User    | [user@test.de](mailto:user@test.de)       | password |
-| Visitor | [visitor@test.de](mailto:visitor@test.de) | password |
-
----
-
-## Security
-
-* passwords are hashed
-* role-based access control
-* sensitive files excluded
-
----
-
-## Screenshots
-
-### Job Overview
-
-![Job Overview](docs/screenshots/job-list.png)
-
-### Job Detail
-
-![Job Detail](docs/screenshots/job-detail.png)
-
-### Create Job
-
-![Create Job](docs/screenshots/job-create.png)
-
-### Admin Companies
-
-![Admin Companies](docs/screenshots/admin-companies.png)
-
-### Admin Categories
-
-![Admin Categories](docs/screenshots/admin-categories.png)
-
----
-
-## Future Improvements
-
-* Save favorite jobs
-* Advanced search
-* API integration
-* Email notifications
-* UI improvements
-
----
-
-## Author
+## 👤 Author
 
 Andre Pflegel
 
 ---
-
-## Laravel
-
-https://laravel.com
