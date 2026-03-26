@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [JobListingController::class, 'index'])->name('jobs.index');
 
 Route::get('/dashboard', function () {
-    return redirect()->route('jobs.index');
+    return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
