@@ -1,12 +1,16 @@
 <?php
 
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\JobListingController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\CompanyController;
-use App\Http\Controllers\CategoryController;
 
 Route::get('/', [JobListingController::class, 'index'])->name('jobs.index');
+
+Route::get('/dashboard', function () {
+    return redirect()->route('jobs.index');
+})->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/jobs/create', [JobListingController::class, 'create'])->name('jobs.create');
@@ -35,9 +39,6 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::get('/jobs/{job}', [JobListingController::class, 'show'])->name('jobs.show');
-
-Route::get('/my-jobs', [JobListingController::class, 'myJobs'])
-    ->name('jobs.my')
-    ->middleware('auth');
+Route::get('/my-jobs', [JobListingController::class, 'myJobs'])->name('jobs.my')->middleware('auth');
 
 require __DIR__.'/auth.php';
