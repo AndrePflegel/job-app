@@ -81,6 +81,25 @@ Ziel des Projekts war die Entwicklung einer strukturierten und erweiterbaren Lar
 
 ---
 
+### Screenshots
+
+#### Job Übersicht mit Filter
+![Job Übersicht](docs/screenshots/job-list.png)
+
+#### Job Detailansicht
+![Job Detail](docs/screenshots/job-detail.png)
+
+#### Job erstellen
+![Job erstellen](docs/screenshots/job-create.png)
+
+#### Kategorienverwaltung (Admin)
+![Kategorien](docs/screenshots/admin-categories.png)
+
+#### Firmenverwaltung (Admin)
+![Firmen](docs/screenshots/admin-companies.png)
+
+---
+
 ### Technologien
 
 * PHP 8
