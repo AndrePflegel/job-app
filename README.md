@@ -6,114 +6,110 @@
 
 ---
 
-# 🇩🇪 Deutsch
+## Deutsch
 
-## 📌 Projektbeschreibung
+### Beschreibung
 
 Diese Anwendung ist eine webbasierte Jobbörse zur Verwaltung und Darstellung von Stellenanzeigen.
 
-Die Plattform kann **öffentlich (ohne Login)** genutzt werden und bietet zusätzlich ein **rollenbasiertes Zugriffssystem** für interne Benutzer.
+Die Plattform kann öffentlich ohne Login genutzt werden und bietet zusätzlich ein rollenbasiertes Zugriffssystem für interne Benutzer.
 
-Ziel des Projekts war es, eine **strukturierte, sichere und erweiterbare Laravel-Anwendung** zu entwickeln.
+Ziel des Projekts war die Entwicklung einer strukturierten und erweiterbaren Laravel-Anwendung.
 
 ---
 
-## 🚀 Features
+### Funktionen
 
 * Rollenbasiertes Zugriffssystem (Guest, Visitor, User, Admin)
 * CRUD-Funktionalität für Jobanzeigen
-* Admin-Verwaltung für Firmen und Kategorien
+* Verwaltung von Firmen und Kategorien durch Admins
 * Filter nach Firma und Kategorie
 * Pagination mit Zustandserhalt
-* „Meine Jobs“-Bereich für eingeloggte User
-* Caching zur Performance-Optimierung
-* Vollständige Testabdeckung mit CI (GitHub Actions)
+* „Meine Jobs“-Bereich für eingeloggte Benutzer
+* Caching zur Reduzierung von Datenbankabfragen
+* Automatisierte Tests mit CI (GitHub Actions)
 
 ---
 
-## 👥 Rollenmodell
+### Rollen
 
-### Gast (nicht eingeloggt)
+**Gast (nicht eingeloggt)**
 
 * Anzeigen von Jobanzeigen
 * Nutzung von Filtern
 
-### Visitor (eingeloggt)
+**Visitor (eingeloggt)**
 
 * gleiche Rechte wie Gast
-* Grundlage für zukünftige Features
 
-### User
+**User**
 
 * eigene Jobs erstellen
 * eigene Jobs bearbeiten und löschen
 
-### Admin
+**Admin**
 
 * vollständige Kontrolle über alle Daten
-* Verwaltung von:
-
-    * Firmen (Companies)
-    * Kategorien (Categories)
+* Verwaltung von Firmen und Kategorien
 
 ---
 
-## 🧩 Funktionen im Detail
+### Funktionen im Detail
 
-### Jobanzeigen
+**Jobanzeigen**
 
 * Übersicht aller Jobs
 * Detailansicht
 * Erstellung, Bearbeitung und Löschung (rollenabhängig)
 
-### Filter & Suche
+**Filter**
 
 * Filter nach Firma
 * Filter nach Kategorie
 * kombinierbar
 * Zustand bleibt bei Pagination erhalten
 
-### Benutzerfreundlichkeit
+**Benutzerfreundlichkeit**
 
 * Pagination bei großen Datenmengen
 * Rücksprung zur vorherigen Seite nach Aktionen
 * Scroll-Position bleibt erhalten
 
-### Performance
+**Performance**
 
-* Caching der Jobliste zur Reduzierung von Datenbankabfragen
+* Caching der Jobliste
 
 ---
 
-## 🛠️ Technologien
+### Technologien
 
 * PHP 8
-* Laravel Framework
+* Laravel
 * Blade Templates
 * MySQL / MariaDB
 * HTML / CSS
-* GitHub Actions (CI/CD)
+* GitHub Actions (CI)
 
 ---
 
-## 🗄️ Datenbank
+### Datenbank
 
-Relationale Datenbank mit folgenden Haupttabellen:
+Relationale Datenbank mit folgenden Tabellen:
 
 * Users
 * Jobs
 * Companies
 * Categories
 
-### Eigenschaften
+Eigenschaften:
 
 * Beziehungen zwischen Jobs, Firmen und Kategorien
-* Integritätsregeln (z. B. keine Löschung bei Abhängigkeiten)
-* Nutzung von Laravel Migrations
+* Firmen und Kategorien können nur gelöscht werden, wenn keine abhängigen Jobs existieren
+* Umsetzung über Laravel Migrationen
 
 ---
 
-## ⚙️ Installation
+### Installation
 
 ```bash
 git clone https://github.com/AndrePflegel/job-app.git
@@ -131,27 +127,23 @@ php artisan serve
 
 ---
 
-## 🧪 Tests & CI
+### Tests
 
-* Automatisierte Tests mit Laravel
+* Laravel Feature Tests
 * GitHub Actions Pipeline
-* Tests laufen auf:
-
-    * PHP 8.2
-    * PHP 8.3
-    * PHP 8.4
+* Tests laufen auf PHP 8.2, 8.3 und 8.4
 
 ---
 
-## 🔐 Sicherheit
+### Sicherheit
 
 * Passwort-Hashing
-* Rollenbasierte Zugriffskontrolle (Policies)
+* Rollenbasierte Zugriffskontrolle
 * Schutz sensibler Dateien (.env, storage, vendor)
 
 ---
 
-## 👤 Test-Accounts
+### Test-Accounts
 
 | Rolle   | E-Mail                                    | Passwort |
 | ------- | ----------------------------------------- | -------- |
@@ -161,41 +153,38 @@ php artisan serve
 
 ---
 
-## 🔮 Erweiterungsmöglichkeiten
+### Erweiterungsmöglichkeiten
 
 * Favoritenfunktion
-* Erweiterte Suche (Keywords)
+* Erweiterte Suche
 * API-Anbindung
 * E-Mail-Benachrichtigungen
-* UI/UX Verbesserungen
+* UI-Verbesserungen
 
 ---
 
-# 🇬🇧 English
+## English
 
-## 📌 Description
+### Description
 
 This project is a web-based job board application built with Laravel.
 
-It supports both:
-
-* public access (without login)
-* role-based internal management
+It supports public access without login as well as role-based internal management.
 
 ---
 
-## 🚀 Features
+### Features
 
 * Role-based access control
-* CRUD operations for jobs
-* Admin management (companies & categories)
+* CRUD operations for job listings
+* Admin management for companies and categories
 * Filtering system
 * Pagination with state persistence
 * CI pipeline with automated tests
 
 ---
 
-## 🛠️ Tech Stack
+### Tech Stack
 
 * PHP / Laravel
 * Blade Templates
@@ -204,7 +193,7 @@ It supports both:
 
 ---
 
-## ⚙️ Setup
+### Setup
 
 ```bash
 composer install
@@ -217,8 +206,6 @@ php artisan serve
 
 ---
 
-## 👤 Author
+### Author
 
 Andre Pflegel
-
----
