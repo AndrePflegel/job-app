@@ -38,6 +38,14 @@
                     </x-nav-link>
                     @endif
                     @endauth
+
+                    @auth
+                    @if (auth()->user()->isAdmin())
+                    <x-nav-link :href="route('admin.users.index')" :active="request()->routeIs('admin.users.*')">
+                        {{ __('Benutzer') }}
+                    </x-nav-link>
+                    @endif
+                    @endauth
                 </div>
             </div>
 
@@ -125,6 +133,14 @@
             @if (auth()->user()->isAdmin())
             <x-responsive-nav-link :href="route('categories.index')" :active="request()->routeIs('categories.*')">
                 {{ __('Kategorien') }}
+            </x-responsive-nav-link>
+            @endif
+            @endauth
+
+            @auth
+            @if (auth()->user()->isAdmin())
+            <x-responsive-nav-link :href="route('admin.users.index')" :active="request()->routeIs('admin.users.*')">
+                {{ __('Benutzer') }}
             </x-responsive-nav-link>
             @endif
             @endauth
