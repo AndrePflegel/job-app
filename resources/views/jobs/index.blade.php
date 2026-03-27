@@ -75,6 +75,17 @@
     @endif
     @endauth
 
+    @auth
+    @if (auth()->user()->canSeeInternalEditorInfo())
+    <p>
+        <strong>Status:</strong>
+        <span style="color: {{ $job->is_active ? '#1f6b3b' : '#b91c1c' }}; font-weight: 600;">
+                {{ $job->is_active ? 'Aktiv' : 'Inaktiv' }}
+            </span>
+    </p>
+    @endif
+    @endauth
+
     <div class="action-row">
         <a class="btn btn-secondary"
            href="{{ route('jobs.show', ['job' => $job->id, 'return' => request()->fullUrl()]) }}"

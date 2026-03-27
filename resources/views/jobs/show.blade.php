@@ -23,6 +23,17 @@
     @endif
     @endauth
 
+    @auth
+    @if (auth()->user()->canSeeInternalEditorInfo())
+    <p>
+        <strong>Status:</strong>
+        <span style="color: {{ $job->is_active ? '#1f6b3b' : '#b91c1c' }}; font-weight: 600;">
+                {{ $job->is_active ? 'Aktiv' : 'Inaktiv' }}
+            </span>
+    </p>
+    @endif
+    @endauth
+
     <div class="action-row">
         @auth
         @if (auth()->user()->canManageJob($job))

@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\Cache;
 use App\Models\Category;
 use App\Models\Company;
 use App\Models\JobListing;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class JobListingController extends Controller
 {
@@ -15,10 +15,17 @@ class JobListingController extends Controller
         $companies = Company::orderBy('name')->get();
         $categories = Category::orderBy('name')->get();
 
-        $cacheKey = 'jobs_' . md5(json_encode($request->all()));
+        $cacheKey = 'jobs_' . md5(json_encode([
+                'filters' => $request->all(),
+                'role' => auth()->check() ? auth()->user()->role : 'guest',
+            ]));
 
         $jobs = Cache::remember($cacheKey, 60, function () use ($request) {
             $query = JobListing::with('company', 'category', 'user');
+
+            if (!auth()->check() || auth()->user()->isVisitor()) {
+                $query->where('is_active', true);
+            }
 
             if ($request->filled('company_id')) {
                 $query->where('company_id', $request->company_id);
@@ -28,7 +35,7 @@ class JobListingController extends Controller
                 $query->where('category_id', $request->category_id);
             }
 
-            return $query->paginate(10)->withQueryString();
+            return $query->latest()->paginate(10)->withQueryString();
         });
 
         return view('jobs.index', compact('jobs', 'companies', 'categories'));
@@ -37,6 +44,14 @@ class JobListingController extends Controller
     public function show($id)
     {
         $job = JobListing::with('company', 'category', 'user')->findOrFail($id);
+
+        if (!$job->is_active) {
+            $user = auth()->user();
+
+            if (!$user || !($user->isAdmin() || $user->isUser())) {
+                abort(404);
+            }
+        }
 
         return view('jobs.show', compact('job'));
     }
@@ -62,9 +77,11 @@ class JobListingController extends Controller
             'salary' => 'nullable|numeric|min:0',
             'company_id' => 'required|exists:companies,id',
             'category_id' => 'required|exists:categories,id',
+            'is_active' => 'nullable|boolean',
         ]);
 
         $validated['user_id'] = auth()->id();
+        $validated['is_active'] = $request->boolean('is_active');
 
         $job = JobListing::create($validated);
 
@@ -97,13 +114,17 @@ class JobListingController extends Controller
             'salary' => 'nullable|numeric|min:0',
             'company_id' => 'required|exists:companies,id',
             'category_id' => 'required|exists:categories,id',
+            'is_active' => 'nullable|boolean',
         ]);
+
+        $validated['is_active'] = $request->boolean('is_active');
 
         $job->update($validated);
 
         Cache::flush();
 
-        return redirect($request->input('return', route('jobs.show', $job->id)))
+        return redirect()
+            ->route('jobs.edit', $job->id)
             ->with('success', 'Jobanzeige erfolgreich aktualisiert.');
     }
 
@@ -123,11 +144,10 @@ class JobListingController extends Controller
     public function myJobs()
     {
         $jobs = JobListing::where('user_id', auth()->id())
-            ->with('company', 'category')
+            ->with('company', 'category', 'user')
             ->latest()
             ->get();
 
         return view('jobs.my-jobs', compact('jobs'));
     }
-
 }

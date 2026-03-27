@@ -18,6 +18,11 @@ class JobListing extends Model
         'company_id',
         'category_id',
         'user_id',
+        'is_active',
+    ];
+
+    protected $casts = [
+        'is_active' => 'boolean',
     ];
 
     public function company(): BelongsTo
