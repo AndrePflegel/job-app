@@ -63,4 +63,9 @@ class User extends Authenticatable
     {
         return $this->isAdmin() || ($this->isUser() && $job->user_id === $this->id);
     }
+
+    public function canSeeInternalEditorInfo(): bool
+    {
+        return $this->isAdmin() || $this->isUser();
+    }
 }

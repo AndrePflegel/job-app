@@ -23,7 +23,11 @@
     <p><strong>Kategorie:</strong> {{ $job->category->name }}</p>
     <p><strong>Ort:</strong> {{ $job->location }}</p>
     <p><strong>Gehalt:</strong> {{ $job->salary }}</p>
+    @auth
+    @if (auth()->user()->canSeeInternalEditorInfo())
     <p><strong>Erstellt von:</strong> {{ $job->user->name }}</p>
+    @endif
+    @endauth
 
     <div class="action-row">
         <a class="btn btn-secondary"
