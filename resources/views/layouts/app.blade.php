@@ -41,7 +41,11 @@
     @endisset
 
     <main class="page-container">
+        @isset($slot)
+        {{ $slot }}
+        @else
         @yield('content')
+        @endisset
     </main>
 </div>
 </body>
