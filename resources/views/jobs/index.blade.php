@@ -71,7 +71,7 @@
     <p><strong>Gehalt:</strong> {{ $job->salary }}</p>
     @auth
     @if (auth()->user()->canSeeInternalEditorInfo())
-    <p><strong>Erstellt von:</strong> {{ $job->user->name }}</p>
+    <p><strong>Erstellt von:</strong> {{ optional($job->user)->name ?? 'Unbekannt' }}</p>
     @endif
     @endauth
 
