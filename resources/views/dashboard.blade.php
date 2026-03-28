@@ -174,7 +174,17 @@
                             @foreach($newMatchingJobs as $job)
                             <div class="border-b border-gray-200 dark:border-gray-700 pb-3">
                                 <p class="font-semibold">{{ $job->title }}</p>
-                                <a href="{{ route('jobs.show', $job->id) }}" class="btn btn-secondary mt-2">Ansehen</a>
+
+                                <p class="text-sm opacity-75">
+                                    {{ optional($job->company)->name ?? 'Ohne Firma' }} ·
+                                    {{ optional($job->category)->name ?? 'Ohne Kategorie' }}
+                                </p>
+
+                                <div class="mt-2">
+                                    <a href="{{ route('jobs.show', $job->id) }}" class="btn btn-secondary">
+                                        Ansehen
+                                    </a>
+                                </div>
                             </div>
                             @endforeach
                         </div>

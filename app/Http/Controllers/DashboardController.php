@@ -31,7 +31,20 @@ class DashboardController extends Controller
                 }])
                 ->orderBy('name')
                 ->get();
-            $data['newMatchingJobs'] = collect();
+            $data['newMatchingJobs'] = \App\Models\JobListing::query()
+                ->where('is_active', true)
+                ->where(function ($query) use ($currentUser) {
+                    $query->whereIn(
+                        'company_id',
+                        $currentUser->savedCompanies()->pluck('companies.id')
+                    )->orWhereIn(
+                        'category_id',
+                        $currentUser->savedCategories()->pluck('categories.id')
+                    );
+                })
+                ->latest()
+                ->take(5)
+                ->get();
         }
 
         if ($currentUser->isUser() || $currentUser->isAdmin()) {
