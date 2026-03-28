@@ -61,7 +61,7 @@ class User extends Authenticatable
 
     public function canManageJob(JobListing $job): bool
     {
-        return $this->isAdmin() || ($this->isUser() && $job->user_id === $this->id);
+        return in_array($this->role, ['admin', 'user']);
     }
 
     public function canSeeInternalEditorInfo(): bool

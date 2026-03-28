@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Models\Company;
 use App\Models\JobListing;
 use App\Models\User;
+use Illuminate\Support\Collection;
 
 class DashboardController extends Controller
 {

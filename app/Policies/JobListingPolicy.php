@@ -32,20 +32,18 @@ class JobListingPolicy
     }
 
     /**
-     * User darf nur eigene Jobs bearbeiten, Admin alle.
+     * Interne User und Admins dürfen Jobs bearbeiten
      */
     public function update(User $user, JobListing $job): bool
     {
-        return $user->role === 'admin'
-            || ($user->role === 'user' && $job->user_id === $user->id);
+        return in_array($user->role, ['user', 'admin']);
     }
 
     /**
-     * User darf nur eigene Jobs löschen, Admin alle.
+     * Interne User und Admins dürfen Jobs löschen
      */
     public function delete(User $user, JobListing $job): bool
     {
-        return $user->role === 'admin'
-            || ($user->role === 'user' && $job->user_id === $user->id);
+        return in_array($user->role, ['user', 'admin']);
     }
 }
