@@ -65,8 +65,8 @@
 
     <p>{{ $job->description }}</p>
 
-    <p><strong>Firma:</strong> {{ $job->company->name }}</p>
-    <p><strong>Kategorie:</strong> {{ $job->category->name }}</p>
+    <p><strong>Firma:</strong> {{ optional($job->company)->name ?? 'Ohne Firma' }}</p>
+    <p><strong>Kategorie:</strong> {{ optional($job->category)->name ?? 'Ohne Kategorie' }}</p>
     <p><strong>Ort:</strong> {{ $job->location }}</p>
     <p><strong>Gehalt:</strong> {{ $job->salary }}</p>
     @auth

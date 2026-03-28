@@ -12,7 +12,7 @@ Im weiteren Verlauf wurde die Anwendung durch Tests, CI/CD und strukturelle Verb
 
 * Laravel (Backend, Routing, Auth, ORM)
 * Blade Templates (Frontend)
-* MySQL / MariaDB (Datenbank)
+* MySQL / MariaDB in diesem Fall lokal SQLlite (Datenbank)
 * Git & GitHub (Versionskontrolle)
 * GitHub Actions (CI/CD)
 * Composer (Dependency Management)
@@ -35,6 +35,7 @@ Zu Beginn kam es zu Unsicherheiten im Umgang mit Git und GitHub, insbesondere:
 * Klare Trennung zwischen lokalem Stand und Remote verstanden
 * bewusster Umgang mit `git add`, `commit` und `push`
 * regelmäßiges Überprüfen des Repository-Zustands
+* Fehler später gefunden (Mail bei Git und GitHub war nicht gleich und damit gab es Probleme)
 
 **Erkenntnis:**
 
