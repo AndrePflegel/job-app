@@ -25,7 +25,12 @@ class DashboardController extends Controller
                 }])
                 ->orderBy('name')
                 ->get();
-            $data['savedCategories'] = collect();
+            $data['savedCategories'] = $currentUser->savedCategories()
+                ->withCount(['jobListings' => function ($query) {
+                    $query->where('is_active', true);
+                }])
+                ->orderBy('name')
+                ->get();
             $data['newMatchingJobs'] = collect();
         }
 

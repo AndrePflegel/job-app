@@ -35,6 +35,25 @@
     @endauth
 
     <p><strong>Kategorie:</strong> {{ optional($job->category)->name ?? 'Ohne Kategorie' }}</p>
+
+    @auth
+    @if (auth()->user()->isVisitor() && $job->category)
+    <div style="margin: 10px 0 14px 0;">
+        @if (auth()->user()->hasSavedCategory($job->category))
+        <form class="inline-form" action="{{ route('saved-categories.destroy', $job->category->id) }}" method="POST">
+            @csrf
+            @method('DELETE')
+            <button class="btn btn-danger" type="submit">Kategorie nicht mehr merken</button>
+        </form>
+        @else
+        <form class="inline-form" action="{{ route('saved-categories.store', $job->category->id) }}" method="POST">
+            @csrf
+            <button class="btn btn-secondary" type="submit">Kategorie merken</button>
+        </form>
+        @endif
+    </div>
+    @endif
+    @endauth
     <p><strong>Ort:</strong> {{ $job->location }}</p>
     <p><strong>Gehalt:</strong> {{ $job->salary }}</p>
     @auth

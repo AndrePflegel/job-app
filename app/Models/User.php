@@ -79,4 +79,14 @@ class User extends Authenticatable
     {
         return $this->savedCompanies()->where('company_id', $company->id)->exists();
     }
+
+    public function savedCategories(): BelongsToMany
+    {
+        return $this->belongsToMany(Category::class)->withTimestamps();
+    }
+
+    public function hasSavedCategory(Category $category): bool
+    {
+        return $this->savedCategories()->where('category_id', $category->id)->exists();
+    }
 }

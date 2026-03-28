@@ -135,6 +135,21 @@
                             @foreach($savedCategories as $category)
                             <div class="border-b border-gray-200 dark:border-gray-700 pb-3">
                                 <p class="font-semibold">{{ $category->name }}</p>
+                                <p class="text-sm opacity-75">
+                                    Aktive Jobs: {{ $category->job_listings_count }}
+                                </p>
+
+                                <div class="mt-2 flex gap-2 flex-wrap">
+                                    <a href="{{ route('jobs.index', ['category_id' => $category->id]) }}" class="btn btn-secondary">
+                                        Jobs ansehen
+                                    </a>
+
+                                    <form action="{{ route('saved-categories.destroy', $category->id) }}" method="POST">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger">Entfernen</button>
+                                    </form>
+                                </div>
                             </div>
                             @endforeach
                         </div>

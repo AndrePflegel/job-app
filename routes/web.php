@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\SavedCompanyController;
+use App\Http\Controllers\SavedCategoryController;
 
 Route::get('/', [JobListingController::class, 'index'])->name('jobs.index');
 
@@ -53,6 +54,12 @@ Route::middleware('auth')->group(function () {
 
     Route::delete('/saved-companies/{company}', [SavedCompanyController::class, 'destroy'])
         ->name('saved-companies.destroy');
+
+    Route::post('/saved-categories/{category}', [SavedCategoryController::class, 'store'])
+        ->name('saved-categories.store');
+
+    Route::delete('/saved-categories/{category}', [SavedCategoryController::class, 'destroy'])
+        ->name('saved-categories.destroy');
 
 });
 
