@@ -28,6 +28,10 @@ Ziel des Projekts war die Entwicklung einer strukturierten und erweiterbaren Lar
 * „Meine Jobs“-Bereich für eingeloggte Benutzer
 * Caching zur Reduzierung von Datenbankabfragen
 * Automatisierte Tests mit CI (GitHub Actions)
+* Personalisierter Dashboard-Bereich für Visitor
+* Speichern von Firmen und Kategorien
+* Anzeige neuer passender Jobs basierend auf Interessen
+* Zeitbasierte Erkennung neuer Inhalte (last_seen_at)
 
 ---
 
@@ -78,6 +82,17 @@ Ziel des Projekts war die Entwicklung einer strukturierten und erweiterbaren Lar
 **Performance**
 
 * Caching der Jobliste
+
+
+**Personalisierung (Visitor)**
+
+* Speichern von Firmen und Kategorien
+* Übersicht im Dashboard
+* Anzeige neuer passender Jobs
+* manuelle Aktualisierung möglich
+* bewusste Markierung als „gesehen“
+
+Diese Funktion ermöglicht eine einfache, aber effektive Personalisierung der Anwendung.
 
 ---
 
@@ -179,6 +194,10 @@ php artisan serve
 * API-Anbindung
 * E-Mail-Benachrichtigungen
 * UI-Verbesserungen
+* gespeicherte Jobs (Favoriten)
+* Benachrichtigungen bei neuen passenden Jobs
+* individuelle Suchprofile
+* Echtzeit-Updates
 
 ---
 

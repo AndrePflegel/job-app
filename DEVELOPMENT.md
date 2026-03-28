@@ -174,6 +174,79 @@ Gerade solche Situationen sind typisch für reale Projekte.
 * CI/CD gehört zum modernen Entwicklungsprozess dazu
 * saubere Struktur spart später viel Zeit
 
+
+---
+
+### 7. Einführung von Personalisierung (Visitor Dashboard)
+
+Im späteren Verlauf wurde die Anwendung um personalisierte Funktionen erweitert.
+
+Neue Features:
+
+* Speichern von Firmen und Kategorien
+* Anzeige im Dashboard
+* Matching von neuen Jobs basierend auf Interessen
+
+---
+
+### 8. Herausforderung: „Neue Jobs“ Logik
+
+Ein zentrales Problem war die Frage:
+
+Wann ist ein Job „neu“?
+
+Ansätze:
+
+* automatische Aktualisierung → Jobs verschwinden sofort (nicht optimal)
+* statischer Zustand → keine Aktualisierung möglich
+
+**Lösung:**
+
+Ein hybrider Ansatz:
+
+* Referenzzeitpunkt (`last_seen_at`)
+* manuelles Aktualisieren („Neue Jobs prüfen“)
+* bewusstes Speichern („Als gesehen markieren“)
+
+---
+
+### 9. UX-Entscheidungen
+
+Besonderer Fokus lag auf Benutzerfreundlichkeit:
+
+* klare Trennung von Aktionen (prüfen vs. markieren)
+* verständliche Button-Beschriftungen
+* stabile Anzeige von Inhalten
+
+---
+
+### 10. Teststrategie erweitert
+
+Neue Tests wurden hinzugefügt für:
+
+* gespeicherte Firmen
+* gespeicherte Kategorien
+* Matching-Logik für Jobs
+* Zustandsänderungen (last_seen_at)
+
+Ergebnis:
+
+* steigende Testabdeckung
+* stabilere Anwendung
+* reproduzierbares Verhalten
+
+---
+
+## Wichtige Erkenntnis aus diesem Abschnitt
+
+Nicht nur technische Umsetzung ist entscheidend, sondern:
+
+* saubere UX
+* nachvollziehbares Verhalten
+* klare Trennung von Logik
+
+Diese Punkte sind typisch für reale Softwareprojekte.
+
 ---
 
 ## Fazit
