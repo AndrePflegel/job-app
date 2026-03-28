@@ -23,7 +23,7 @@
 <div class="job-card">
     <h2>{{ $category->name }}</h2>
 
-    <p><strong>Zugeordnete Jobs:</strong> {{ $category->jobListings()->count() }}</p>
+    <p><strong>Zugeordnete Jobs:</strong> {{ $category->job_listings_count }}</p>
 
     <div class="action-row">
         <a class="btn btn-primary" href="{{ route('categories.edit', $category->id) }}">Bearbeiten</a>

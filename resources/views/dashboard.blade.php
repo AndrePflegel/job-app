@@ -54,7 +54,7 @@
                 <div class="p-6 text-gray-900 dark:text-gray-100">
                     <h3 class="text-lg font-semibold mb-4">Meine zuletzt bearbeiteten Jobs</h3>
 
-                    @if($latestMyJobs->isEmpty())
+                    @if(optional($latestMyJobs)->isEmpty())
                     <p>Du hast noch keine eigenen Jobanzeigen.</p>
                     @else
                     <div class="space-y-3">
@@ -62,8 +62,8 @@
                         <div class="border-b border-gray-200 dark:border-gray-700 pb-3">
                             <p class="font-semibold">{{ $job->title }}</p>
                             <p class="text-sm opacity-75">
-                                {{ $job->company->name ?? 'Ohne Firma' }} ·
-                                {{ $job->category->name ?? 'Ohne Kategorie' }}
+                                {{ optional($job->company)->name ?? 'Ohne Firma' }} ·
+                                {{ optional($job->category)->name ?? 'Ohne Kategorie' }}
                             </p>
                             <p class="text-sm">
                                 Status:

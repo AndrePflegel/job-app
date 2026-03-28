@@ -11,7 +11,9 @@ class CategoryController extends Controller
     {
         $this->authorizeAdmin();
 
-        $categories = Category::orderBy('name')->get();
+        $categories = Category::withCount('jobListings')
+            ->orderBy('name')
+            ->get();
 
         return view('categories.index', compact('categories'));
     }

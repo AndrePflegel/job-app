@@ -21,7 +21,7 @@
 
         <div style="margin-bottom: 15px;">
             <label for="name"><strong>Name</strong></label><br>
-            <input type="text" name="name" id="name" value="{{ old('name', $company->name) }}">
+            <input type="text" name="name" id="name" value="{{ old('name', $company->name) }}" required>
         </div>
 
         <div style="margin-bottom: 15px;">

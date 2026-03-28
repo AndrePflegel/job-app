@@ -25,7 +25,7 @@
 
     <p><strong>Standort:</strong> {{ $company->location ?: '—' }}</p>
     <p><strong>Beschreibung:</strong> {{ $company->description ?: '—' }}</p>
-    <p><strong>Zugeordnete Jobs:</strong> {{ $company->jobListings()->count() }}</p>
+    <p><strong>Zugeordnete Jobs:</strong> {{ $company->job_listings_count }}</p>
 
     <div class="action-row">
         <a class="btn btn-primary" href="{{ route('companies.edit', $company->id) }}">Bearbeiten</a>

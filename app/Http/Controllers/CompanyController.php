@@ -11,7 +11,9 @@ class CompanyController extends Controller
     {
         $this->authorizeAdmin();
 
-        $companies = Company::orderBy('name')->get();
+        $companies = Company::withCount('jobListings')
+            ->orderBy('name')
+            ->get();
 
         return view('companies.index', compact('companies'));
     }

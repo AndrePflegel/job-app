@@ -20,7 +20,7 @@
 
         <div style="margin-bottom: 20px;">
             <label for="name"><strong>Name</strong></label><br>
-            <input type="text" name="name" id="name" value="{{ old('name') }}">
+            <input type="text" name="name" id="name" value="{{ old('name') }}" required>
         </div>
 
         <div class="action-row">

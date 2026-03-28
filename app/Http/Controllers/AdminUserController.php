@@ -67,6 +67,15 @@ class AdminUserController extends Controller
             unset($validated['password']);
         }
 
+        if (
+            $user->role === 'admin' &&
+            $validated['role'] !== 'admin' &&
+            User::where('role', 'admin')->count() <= 1
+        ) {
+            return redirect()->route('admin.users.edit', $user->id)
+                ->with('error', 'Der letzte Admin kann nicht auf eine andere Rolle geändert werden.');
+        }
+
         $user->update($validated);
 
         return redirect()->route('admin.users.edit', $user->id)
