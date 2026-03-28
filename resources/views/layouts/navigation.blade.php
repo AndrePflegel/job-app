@@ -18,9 +18,11 @@
                     </x-nav-link>
 
                     @auth
+                    @if (auth()->user()->isUser() || auth()->user()->isAdmin())
                     <x-nav-link :href="route('jobs.my')" :active="request()->routeIs('jobs.my')">
                         Meine Jobs
                     </x-nav-link>
+                    @endif
                     @endauth
 
                     @auth
@@ -116,9 +118,11 @@
                 {{ __('Jobs') }}
             </x-responsive-nav-link>
             @auth
+            @if (auth()->user()->isUser() || auth()->user()->isAdmin())
             <x-responsive-nav-link :href="route('jobs.my')" :active="request()->routeIs('jobs.my')">
                 Meine Jobs
             </x-responsive-nav-link>
+            @endif
             @endauth
 
             @auth

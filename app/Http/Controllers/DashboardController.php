@@ -19,7 +19,12 @@ class DashboardController extends Controller
         ];
 
         if ($currentUser->isVisitor()) {
-            $data['savedCompanies'] = collect();
+            $data['savedCompanies'] = $currentUser->savedCompanies()
+                ->withCount(['jobListings' => function ($query) {
+                    $query->where('is_active', true);
+                }])
+                ->orderBy('name')
+                ->get();
             $data['savedCategories'] = collect();
             $data['newMatchingJobs'] = collect();
         }

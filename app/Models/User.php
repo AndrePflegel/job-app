@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class User extends Authenticatable
 {
@@ -67,5 +68,15 @@ class User extends Authenticatable
     public function canSeeInternalEditorInfo(): bool
     {
         return $this->isAdmin() || $this->isUser();
+    }
+
+    public function savedCompanies(): BelongsToMany
+    {
+        return $this->belongsToMany(Company::class)->withTimestamps();
+    }
+
+    public function hasSavedCompany(Company $company): bool
+    {
+        return $this->savedCompanies()->where('company_id', $company->id)->exists();
     }
 }

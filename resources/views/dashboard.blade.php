@@ -97,6 +97,21 @@
                             @foreach($savedCompanies as $company)
                             <div class="border-b border-gray-200 dark:border-gray-700 pb-3">
                                 <p class="font-semibold">{{ $company->name }}</p>
+                                <p class="text-sm opacity-75">
+                                    Aktive Jobs: {{ $company->job_listings_count }}
+                                </p>
+
+                                <div class="mt-2 flex gap-2 flex-wrap">
+                                    <a href="{{ route('jobs.index', ['company_id' => $company->id]) }}" class="btn btn-secondary">
+                                        Jobs ansehen
+                                    </a>
+
+                                    <form action="{{ route('saved-companies.destroy', $company->id) }}" method="POST">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger">Entfernen</button>
+                                    </form>
+                                </div>
                             </div>
                             @endforeach
                         </div>

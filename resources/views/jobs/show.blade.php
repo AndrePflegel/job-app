@@ -14,6 +14,26 @@
     <p>{{ $job->description }}</p>
 
     <p><strong>Firma:</strong> {{ optional($job->company)->name ?? 'Ohne Firma' }}</p>
+
+    @auth
+    @if (auth()->user()->isVisitor() && $job->company)
+    <div style="margin: 10px 0 14px 0;">
+        @if (auth()->user()->hasSavedCompany($job->company))
+        <form class="inline-form" action="{{ route('saved-companies.destroy', $job->company->id) }}" method="POST">
+            @csrf
+            @method('DELETE')
+            <button class="btn btn-danger" type="submit">Firma nicht mehr merken</button>
+        </form>
+        @else
+        <form class="inline-form" action="{{ route('saved-companies.store', $job->company->id) }}" method="POST">
+            @csrf
+            <button class="btn btn-secondary" type="submit">Firma merken</button>
+        </form>
+        @endif
+    </div>
+    @endif
+    @endauth
+
     <p><strong>Kategorie:</strong> {{ optional($job->category)->name ?? 'Ohne Kategorie' }}</p>
     <p><strong>Ort:</strong> {{ $job->location }}</p>
     <p><strong>Gehalt:</strong> {{ $job->salary }}</p>

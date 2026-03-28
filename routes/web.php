@@ -7,6 +7,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\SavedCompanyController;
 
 Route::get('/', [JobListingController::class, 'index'])->name('jobs.index');
 
@@ -46,6 +47,13 @@ Route::middleware('auth')->group(function () {
     Route::get('/admin/users/{user}/edit', [AdminUserController::class, 'edit'])->name('admin.users.edit');
     Route::put('/admin/users/{user}', [AdminUserController::class, 'update'])->name('admin.users.update');
     Route::delete('/admin/users/{user}', [AdminUserController::class, 'destroy'])->name('admin.users.destroy');
+
+    Route::post('/saved-companies/{company}', [SavedCompanyController::class, 'store'])
+        ->name('saved-companies.store');
+
+    Route::delete('/saved-companies/{company}', [SavedCompanyController::class, 'destroy'])
+        ->name('saved-companies.destroy');
+
 });
 
 Route::get('/jobs/{job}', [JobListingController::class, 'show'])->name('jobs.show');
