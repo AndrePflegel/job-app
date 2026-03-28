@@ -5,18 +5,47 @@
         </h2>
     </x-slot>
 
-
-
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
 
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
+                    @if(auth()->user()->isVisitor())
+                    <h3 class="text-lg font-semibold mb-4">Willkommen zurück, {{ auth()->user()->email }}</h3>
+                    <p>
+                        Hier findest du deine gemerkten Inhalte und später neue passende Jobanzeigen
+                        zu Firmen und Kategorien, die dich interessieren.
+                    </p>
+                    @else
                     <h3 class="text-lg font-semibold mb-4">Willkommen, {{ auth()->user()->name }}</h3>
                     <p>Hier findest du eine Übersicht über die für deine Rolle relevanten Informationen.</p>
+                    @endif
                 </div>
             </div>
 
+            @if(auth()->user()->isVisitor())
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+                    <div class="p-6 text-gray-900 dark:text-gray-100">
+                        <p class="text-sm opacity-75">Aktive Jobanzeigen</p>
+                        <p class="text-3xl font-bold">{{ $activeJobsCount }}</p>
+                        <p class="mt-2 text-sm opacity-75">
+                            Diese aktuell sichtbaren Jobanzeigen kannst du durchsuchen und beobachten.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+                    <div class="p-6 text-gray-900 dark:text-gray-100">
+                        <p class="text-sm opacity-75">Dein persönlicher Bereich</p>
+                        <p class="text-base mt-2">
+                            Sobald du Firmen oder Kategorien speicherst, findest du hier neue passende Jobs
+                            und persönliche Übersichten.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            @else
             <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
                 <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="p-6 text-gray-900 dark:text-gray-100">
@@ -48,13 +77,89 @@
                 </div>
                 @endif
             </div>
+            @endif
+
+            @if(auth()->user()->isVisitor())
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+                    <div class="p-6 text-gray-900 dark:text-gray-100">
+                        <h3 class="text-lg font-semibold mb-4">Gemerkte Firmen</h3>
+
+                        @if($savedCompanies->isEmpty())
+                        <p class="text-sm opacity-75">
+                            Du hast noch keine Firmen gespeichert.
+                        </p>
+                        <p class="mt-2 text-sm opacity-75">
+                            Sobald du später interessante Firmen markierst, erscheinen sie hier.
+                        </p>
+                        @else
+                        <div class="space-y-3">
+                            @foreach($savedCompanies as $company)
+                            <div class="border-b border-gray-200 dark:border-gray-700 pb-3">
+                                <p class="font-semibold">{{ $company->name }}</p>
+                            </div>
+                            @endforeach
+                        </div>
+                        @endif
+                    </div>
+                </div>
+
+                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+                    <div class="p-6 text-gray-900 dark:text-gray-100">
+                        <h3 class="text-lg font-semibold mb-4">Gemerkte Kategorien</h3>
+
+                        @if($savedCategories->isEmpty())
+                        <p class="text-sm opacity-75">
+                            Du hast noch keine Kategorien gespeichert.
+                        </p>
+                        <p class="mt-2 text-sm opacity-75">
+                            Später kannst du dir Kategorien merken und hier gesammelt wiederfinden.
+                        </p>
+                        @else
+                        <div class="space-y-3">
+                            @foreach($savedCategories as $category)
+                            <div class="border-b border-gray-200 dark:border-gray-700 pb-3">
+                                <p class="font-semibold">{{ $category->name }}</p>
+                            </div>
+                            @endforeach
+                        </div>
+                        @endif
+                    </div>
+                </div>
+
+                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+                    <div class="p-6 text-gray-900 dark:text-gray-100">
+                        <h3 class="text-lg font-semibold mb-4">Neue passende Jobs</h3>
+
+                        @if($newMatchingJobs->isEmpty())
+                        <p class="text-sm opacity-75">
+                            Aktuell gibt es noch keine neuen passenden Jobanzeigen für deine gemerkten Inhalte.
+                        </p>
+                        <p class="mt-2 text-sm opacity-75">
+                            Sobald du Firmen oder Kategorien speicherst und neue passende Jobs erscheinen,
+                            findest du sie hier.
+                        </p>
+                        @else
+                        <div class="space-y-3">
+                            @foreach($newMatchingJobs as $job)
+                            <div class="border-b border-gray-200 dark:border-gray-700 pb-3">
+                                <p class="font-semibold">{{ $job->title }}</p>
+                                <a href="{{ route('jobs.show', $job->id) }}" class="btn btn-secondary mt-2">Ansehen</a>
+                            </div>
+                            @endforeach
+                        </div>
+                        @endif
+                    </div>
+                </div>
+            </div>
+            @endif
 
             @if(auth()->user()->isUser() || auth()->user()->isAdmin())
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
                     <h3 class="text-lg font-semibold mb-4">Meine zuletzt bearbeiteten Jobs</h3>
 
-                    @if(optional($latestMyJobs)->isEmpty())
+                    @if($latestMyJobs->isEmpty())
                     <p>Du hast noch keine eigenen Jobanzeigen.</p>
                     @else
                     <div class="space-y-3">

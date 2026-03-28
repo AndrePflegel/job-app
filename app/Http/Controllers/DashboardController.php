@@ -18,6 +18,12 @@ class DashboardController extends Controller
             'activeJobsCount' => JobListing::where('is_active', true)->count(),
         ];
 
+        if ($currentUser->isVisitor()) {
+            $data['savedCompanies'] = collect();
+            $data['savedCategories'] = collect();
+            $data['newMatchingJobs'] = collect();
+        }
+
         if ($currentUser->isUser() || $currentUser->isAdmin()) {
             $data['myJobsCount'] = JobListing::where('user_id', $currentUser->id)->count();
             $data['myActiveJobsCount'] = JobListing::where('user_id', $currentUser->id)
