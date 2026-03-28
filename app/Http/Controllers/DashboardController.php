@@ -6,7 +6,6 @@ use App\Models\Category;
 use App\Models\Company;
 use App\Models\JobListing;
 use App\Models\User;
-use Illuminate\Support\Collection;
 
 class DashboardController extends Controller
 {
@@ -19,32 +18,46 @@ class DashboardController extends Controller
         ];
 
         if ($currentUser->isVisitor()) {
+            $savedCompanyIds = $currentUser->savedCompanies()->pluck('companies.id');
+            $savedCategoryIds = $currentUser->savedCategories()->pluck('categories.id');
+
             $data['savedCompanies'] = $currentUser->savedCompanies()
                 ->withCount(['jobListings' => function ($query) {
                     $query->where('is_active', true);
                 }])
                 ->orderBy('name')
                 ->get();
+
             $data['savedCategories'] = $currentUser->savedCategories()
                 ->withCount(['jobListings' => function ($query) {
                     $query->where('is_active', true);
                 }])
                 ->orderBy('name')
                 ->get();
-            $data['newMatchingJobs'] = \App\Models\JobListing::query()
+
+            if (!session()->has('dashboard_reference_seen_at')) {
+                session(['dashboard_reference_seen_at' => $currentUser->last_seen_at]);
+            }
+
+            $referenceSeenAt = session('dashboard_reference_seen_at');
+
+            $matchingJobsQuery = JobListing::with('company', 'category')
                 ->where('is_active', true)
-                ->where(function ($query) use ($currentUser) {
-                    $query->whereIn(
-                        'company_id',
-                        $currentUser->savedCompanies()->pluck('companies.id')
-                    )->orWhereIn(
-                        'category_id',
-                        $currentUser->savedCategories()->pluck('categories.id')
-                    );
-                })
+                ->where(function ($query) use ($savedCompanyIds, $savedCategoryIds) {
+                    $query->whereIn('company_id', $savedCompanyIds)
+                        ->orWhereIn('category_id', $savedCategoryIds);
+                });
+
+            if ($referenceSeenAt) {
+                $matchingJobsQuery->where('created_at', '>', $referenceSeenAt);
+            }
+
+            $data['newMatchingJobs'] = $matchingJobsQuery
                 ->latest()
                 ->take(5)
                 ->get();
+
+            $data['referenceSeenAt'] = $referenceSeenAt;
         }
 
         if ($currentUser->isUser() || $currentUser->isAdmin()) {
@@ -73,6 +86,42 @@ class DashboardController extends Controller
             $data['visitorsCount'] = User::where('role', 'visitor')->count();
         }
 
+
+
         return view('dashboard', $data);
+
+
+    }
+
+    public function refreshMatchingJobs()
+    {
+        $currentUser = auth()->user();
+
+        if (!$currentUser || !$currentUser->isVisitor()) {
+            abort(403, 'Nur Visitor können neue passende Jobs aktualisieren.');
+        }
+
+        return redirect()->route('dashboard')
+            ->with('success', 'Neue passende Jobs wurden aktualisiert.');
+    }
+
+    public function markMatchingJobsAsSeen()
+    {
+        $currentUser = auth()->user();
+
+        if (!$currentUser || !$currentUser->isVisitor()) {
+            abort(403, 'Nur Visitor können passende Jobs als gesehen markieren.');
+        }
+
+        $now = now();
+
+        $currentUser->update([
+            'last_seen_at' => $now,
+        ]);
+
+        session(['dashboard_reference_seen_at' => $now]);
+
+        return redirect()->route('dashboard')
+            ->with('success', 'Der Stand wurde übernommen. Neue passende Jobs werden ab jetzt neu erfasst.');
     }
 }

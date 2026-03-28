@@ -161,6 +161,38 @@
                     <div class="p-6 text-gray-900 dark:text-gray-100">
                         <h3 class="text-lg font-semibold mb-4">Neue passende Jobs</h3>
 
+                        <div class="mb-4 flex flex-wrap items-center gap-3">
+                            @if($referenceSeenAt)
+                            <div>
+                                <p class="text-sm opacity-75">
+                                    Neue Jobs seit deinem letzten Besuch
+                                </p>
+                                <p class="text-sm opacity-75">
+                                    {{ $referenceSeenAt->format('d.m.Y H:i') }}
+                                </p>
+                            </div>
+                            @else
+                            <p class="text-sm opacity-75">
+                                Neue passende Jobs aus deinem aktuellen Interessensbereich.
+                            </p>
+                            @endif
+
+                            <form action="{{ route('dashboard.refresh-matching-jobs') }}" method="POST">
+                                @csrf
+                                <button type="submit" class="btn btn-secondary">Neue Jobs prüfen</button>
+                            </form>
+
+                            @if($newMatchingJobs->isNotEmpty())
+                            <form action="{{ route('dashboard.mark-matching-jobs-as-seen') }}" method="POST">
+                                @csrf
+                                <button type="submit" class="btn btn-primary">Als gesehen markieren</button>
+                            </form>
+                            @endif
+
+
+                        </div>
+
+
                         @if($newMatchingJobs->isEmpty())
                         <p class="text-sm opacity-75">
                             Aktuell gibt es noch keine neuen passenden Jobanzeigen für deine gemerkten Inhalte.

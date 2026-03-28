@@ -61,6 +61,14 @@ Route::middleware('auth')->group(function () {
     Route::delete('/saved-categories/{category}', [SavedCategoryController::class, 'destroy'])
         ->name('saved-categories.destroy');
 
+    Route::post('/dashboard/refresh-matching-jobs', [DashboardController::class, 'refreshMatchingJobs'])
+        ->name('dashboard.refresh-matching-jobs');
+
+    Route::post('/dashboard/mark-matching-jobs-as-seen', [DashboardController::class, 'markMatchingJobsAsSeen'])
+        ->name('dashboard.mark-matching-jobs-as-seen');
+
+
+
 });
 
 Route::get('/jobs/{job}', [JobListingController::class, 'show'])->name('jobs.show');
