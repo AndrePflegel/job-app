@@ -54,6 +54,10 @@
                     </x-nav-link>
                     @endif
                     @endauth
+
+                    <x-nav-link :href="route('sitemap.human')" :active="request()->routeIs('sitemap.human')">
+                        Sitemap
+                    </x-nav-link>
                 </div>
             </div>
 
@@ -103,8 +107,6 @@
             </div>
             @endauth
 
-
-
             <!-- Hamburger -->
             <div class="-me-2 flex items-center sm:hidden">
                 <button @click="open = ! open" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 dark:text-gray-500 hover:text-gray-500 dark:hover:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-900 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-900 focus:text-gray-500 dark:focus:text-gray-400 transition duration-150 ease-in-out">
@@ -123,11 +125,13 @@
             <x-responsive-nav-link :href="route('jobs.index')" :active="request()->routeIs('jobs.index')">
                 {{ __('Jobs') }}
             </x-responsive-nav-link>
+
             @auth
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                 Dashboard
             </x-responsive-nav-link>
             @endauth
+
             @auth
             @if (auth()->user()->isUser() || auth()->user()->isAdmin())
             <x-responsive-nav-link :href="route('jobs.my')" :active="request()->routeIs('jobs.my')">
@@ -159,6 +163,10 @@
             </x-responsive-nav-link>
             @endif
             @endauth
+
+            <x-responsive-nav-link :href="route('sitemap.human')" :active="request()->routeIs('sitemap.human')">
+                Sitemap
+            </x-responsive-nav-link>
         </div>
 
         @auth

@@ -1,24 +1,32 @@
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            Dashboard
-        </h2>
-    </x-slot>
-
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
 
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900 dark:text-gray-100">
+                <div class="p-6 text-gray-900 dark:text-gray-100 space-y-4">
+
+                    <div>
+                        <h1 class="text-2xl font-semibold">Dashboard</h1>
+                        <p class="text-sm opacity-75">
+                            Übersicht über deine wichtigsten Inhalte und Aktivitäten.
+                        </p>
+                    </div>
+
                     @if(auth()->user()->isVisitor())
-                    <h3 class="text-lg font-semibold mb-4">Willkommen zurück, {{ auth()->user()->email }}</h3>
-                    <p>
-                        Hier findest du deine gemerkten Inhalte und später neue passende Jobanzeigen
-                        zu Firmen und Kategorien, die dich interessieren.
-                    </p>
+                    <div>
+                        <h3 class="text-lg font-semibold">Willkommen zurück, {{ auth()->user()->email }}</h3>
+                        <p>
+                            Hier findest du deine gemerkten Inhalte und später neue passende Jobanzeigen
+                            zu Firmen und Kategorien, die dich interessieren.
+                        </p>
+                    </div>
                     @else
-                    <h3 class="text-lg font-semibold mb-4">Willkommen, {{ auth()->user()->name }}</h3>
-                    <p>Hier findest du eine Übersicht über die für deine Rolle relevanten Informationen.</p>
+                    <div>
+                        <h3 class="text-lg font-semibold">Willkommen, {{ auth()->user()->name }}</h3>
+                        <p>
+                            Hier findest du eine Übersicht über die für deine Rolle relevanten Informationen.
+                        </p>
+                    </div>
                     @endif
                 </div>
             </div>
@@ -188,10 +196,7 @@
                                 <button type="submit" class="btn btn-primary">Als gesehen markieren</button>
                             </form>
                             @endif
-
-
                         </div>
-
 
                         @if($newMatchingJobs->isEmpty())
                         <p class="text-sm opacity-75">

@@ -9,6 +9,14 @@ use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\SavedCompanyController;
 use App\Http\Controllers\SavedCategoryController;
+use App\Models\JobListing;
+
+Route::get('/sitemap.xml', function () {
+    $jobs = JobListing::where('is_active', true)->get();
+
+    return response()->view('sitemap', compact('jobs'))
+        ->header('Content-Type', 'application/xml');
+});
 
 Route::get('/', [JobListingController::class, 'index'])->name('jobs.index');
 
@@ -75,3 +83,7 @@ Route::get('/jobs/{job}', [JobListingController::class, 'show'])->name('jobs.sho
 Route::get('/my-jobs', [JobListingController::class, 'myJobs'])->name('jobs.my')->middleware('auth');
 
 require __DIR__.'/auth.php';
+
+Route::get('/sitemap', function () {
+    return view('sitemap-human');
+})->name('sitemap.human');

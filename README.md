@@ -98,6 +98,9 @@ Ziel des Projekts war die Entwicklung einer strukturierten und erweiterbaren Lar
 
 Diese Funktion ermöglicht eine einfache, aber effektive Personalisierung der Anwendung.
 
+* XML-Sitemap für Suchmaschinen (/sitemap.xml)
+* Visuelle Sitemap zur Darstellung der Seitenstruktur (/sitemap)
+
 ---
 
 ### Screenshots
@@ -129,6 +132,8 @@ Diese Funktion ermöglicht eine einfache, aber effektive Personalisierung der An
 * GitHub Actions (CI)
 * SQLite (lokal für Entwicklung und Tests)
 
+* Service-Klassen zur Auslagerung von Business-Logik (z. B. VisitorMatchingJobsService)
+
 ---
 
 ### Datenbank
@@ -159,14 +164,6 @@ Beziehungen:
 ---
 
 ## Datenbankmodell (aktueller Stand)
-
-Das ursprüngliche Datenmodell wurde im Verlauf der Entwicklung erweitert.
-
-Neu hinzugekommen:
-- Pivot-Tabellen für gespeicherte Firmen und Kategorien (`company_user`, `category_user`)
-- `last_seen_at` im User zur Ermittlung neuer Jobs seit dem letzten Besuch
-
-![Aktuelles ER-Diagramm](## Datenbankmodell (aktueller Stand)
 
 Das ursprüngliche Datenmodell wurde im Verlauf der Entwicklung erweitert.
 
@@ -209,6 +206,8 @@ Abgedeckte Bereiche:
 * gespeicherte Firmen und Kategorien
 * personalisierte Job-Vorschläge
 * Zustandsänderungen (z. B. „als gesehen markieren“)
+
+* Service-Tests für ausgelagerte Logik (z. B. Matching-Logik und Session-Verhalten)
 
 ---
 
