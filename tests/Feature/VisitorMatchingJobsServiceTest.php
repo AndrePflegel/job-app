@@ -15,7 +15,7 @@ class VisitorMatchingJobsServiceTest extends TestCase
 {
     use RefreshDatabase;
 
-    
+
 
     public function test_get_matching_jobs_returns_only_active_matching_jobs(): void
     {
