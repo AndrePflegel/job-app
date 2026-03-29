@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Models\Company;
 use App\Models\JobListing;
 use App\Models\User;
+use App\Services\VisitorMatchingJobsService;
 
 class DashboardController extends Controller
 {
@@ -18,8 +19,7 @@ class DashboardController extends Controller
         ];
 
         if ($currentUser->isVisitor()) {
-            $savedCompanyIds = $currentUser->savedCompanies()->pluck('companies.id');
-            $savedCategoryIds = $currentUser->savedCategories()->pluck('categories.id');
+
 
             $data['savedCompanies'] = $currentUser->savedCompanies()
                 ->withCount(['jobListings' => function ($query) {
@@ -41,23 +41,11 @@ class DashboardController extends Controller
 
             $referenceSeenAt = session('dashboard_reference_seen_at');
 
-            $matchingJobsQuery = JobListing::with('company', 'category')
-                ->where('is_active', true)
-                ->where(function ($query) use ($savedCompanyIds, $savedCategoryIds) {
-                    $query->whereIn('company_id', $savedCompanyIds)
-                        ->orWhereIn('category_id', $savedCategoryIds);
-                });
-
-            if ($referenceSeenAt) {
-                $matchingJobsQuery->where('created_at', '>', $referenceSeenAt);
-            }
-
-            $data['newMatchingJobs'] = $matchingJobsQuery
-                ->latest()
-                ->take(5)
-                ->get();
-
             $data['referenceSeenAt'] = $referenceSeenAt;
+            $data['newMatchingJobs'] = $this->visitorMatchingJobsService->getMatchingJobs(
+                $currentUser,
+                $referenceSeenAt
+            );
         }
 
         if ($currentUser->isUser() || $currentUser->isAdmin()) {
@@ -113,15 +101,17 @@ class DashboardController extends Controller
             abort(403, 'Nur Visitor können passende Jobs als gesehen markieren.');
         }
 
-        $now = now();
+        $this->visitorMatchingJobsService->markAsSeen($currentUser);
 
-        $currentUser->update([
-            'last_seen_at' => $now,
-        ]);
+        $currentUser->refresh();
 
-        session(['dashboard_reference_seen_at' => $now]);
+        session(['dashboard_reference_seen_at' => $currentUser->last_seen_at]);
 
         return redirect()->route('dashboard')
             ->with('success', 'Der Stand wurde übernommen. Neue passende Jobs werden ab jetzt neu erfasst.');
     }
+
+    public function __construct(
+        private VisitorMatchingJobsService $visitorMatchingJobsService
+    ) {}
 }
