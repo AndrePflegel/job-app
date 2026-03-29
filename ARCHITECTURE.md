@@ -20,6 +20,57 @@ Die Anwendung basiert auf dem MVC-Pattern (Model-View-Controller), welches im La
 
 ---
 
+### Model (Eloquent ORM im Detail)
+
+Die Models basieren auf Laravel Eloquent ORM und bilden nicht nur Tabellen ab,
+sondern enthalten auch Geschäftslogik und Beziehungen.
+
+Wichtige Models:
+
+* **User**
+    * enthält Rollenlogik (`isAdmin()`, `isUser()`, `isVisitor()`)
+    * verwaltet Beziehungen zu Jobs, Firmen und Kategorien
+    * enthält Feld `last_seen_at` für personalisierte Inhalte
+
+* **JobListing**
+    * zentrale Entität der Anwendung
+    * gehört zu:
+        * Company
+        * Category
+        * User
+
+* **Company**
+    * hat viele JobListings
+    * gehört zu vielen Usern (gespeichert)
+
+* **Category**
+    * hat viele JobListings
+    * gehört zu vielen Usern (gespeichert)
+
+---
+
+### Beziehungen (Eloquent Relationships)
+
+Die Anwendung nutzt verschiedene Beziehungstypen:
+
+* **One-to-Many**
+    * User → JobListings
+    * Company → JobListings
+    * Category → JobListings
+
+* **Many-to-Many**
+    * User ↔ Company (gespeicherte Firmen)
+    * User ↔ Category (gespeicherte Kategorien)
+
+Umgesetzt über Pivot-Tabellen:
+
+* `company_user`
+* `category_user`
+
+Diese Beziehungen ermöglichen die Personalisierung der Anwendung.
+
+---
+
 ### View
 
 * Umsetzung mit Blade Templates
@@ -31,6 +82,24 @@ Die Anwendung basiert auf dem MVC-Pattern (Model-View-Controller), welches im La
 
 * Verarbeitet Anfragen
 * Steuert die Logik zwischen Model und View
+
+---
+
+### Controller (Logik im Detail)
+
+Controller enthalten neben CRUD-Logik auch:
+
+* Rollenabhängige Logik (z. B. unterschiedliche Dashboards)
+* Filter- und Suchlogik
+* Matching-Logik für personalisierte Inhalte
+
+Beispiel:
+
+Der `DashboardController`:
+
+* liefert unterschiedliche Daten je nach Rolle
+* berechnet neue passende Jobs
+* verwaltet den Referenzzeitpunkt (`last_seen_at`)
 
 ---
 
@@ -68,6 +137,28 @@ Die Anwendung basiert auf dem MVC-Pattern (Model-View-Controller), welches im La
 
 ---
 
+### Datenbankstruktur (erweitert)
+
+Zusätzlich zu den Haupttabellen existieren:
+
+* Pivot-Tabellen für Many-to-Many Beziehungen
+* Zeitbasierte Felder zur Zustandsverwaltung
+
+Wichtige Felder:
+
+* `job_listings.is_active`
+* `users.role`
+* `users.last_seen_at`
+
+Diese ermöglichen:
+
+* Filterung nach aktiven Jobs
+* rollenbasierte Logik
+* personalisierte Inhalte
+
+---
+
+
 ## CI/CD
 
 * GitHub Actions
@@ -76,6 +167,23 @@ Die Anwendung basiert auf dem MVC-Pattern (Model-View-Controller), welches im La
 
 
 ---
+
+### Testing
+
+Die Anwendung nutzt Laravel Feature Tests.
+
+Abgedeckt sind unter anderem:
+
+* Zugriffskontrolle (Policies)
+* Job-Erstellung
+* Admin-Funktionen
+* gespeicherte Firmen und Kategorien
+* Matching-Logik für neue Jobs
+
+Tests werden automatisch über GitHub Actions ausgeführt.
+
+---
+
 
 ## Rollen- und Berechtigungssystem
 

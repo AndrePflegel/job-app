@@ -44,12 +44,16 @@ Ziel des Projekts war die Entwicklung einer strukturierten und erweiterbaren Lar
 
 **Visitor (eingeloggt)**
 
-* gleiche Rechte wie Gast
+* gleiche Basisrechte wie Gast
+* zusätzlich:
+    * persönliches Dashboard
+    * Speichern von Firmen und Kategorien
+    * Anzeige neuer passender Jobs
 
 **User**
 
-* eigene Jobs erstellen
-* eigene Jobs bearbeiten und löschen
+* Jobs erstellen
+* Jobs bearbeiten und löschen (rollenbasiert, auch teamorientiert möglich)
 
 **Admin**
 
@@ -123,6 +127,7 @@ Diese Funktion ermöglicht eine einfache, aber effektive Personalisierung der An
 * MySQL / MariaDB
 * HTML / CSS
 * GitHub Actions (CI)
+* SQLite (lokal für Entwicklung und Tests)
 
 ---
 
@@ -140,6 +145,16 @@ Eigenschaften:
 * Beziehungen zwischen Jobs, Firmen und Kategorien
 * Firmen und Kategorien können nur gelöscht werden, wenn keine abhängigen Jobs existieren
 * Umsetzung über Laravel Migrationen
+
+Zusätzlich:
+
+* Pivot-Tabellen für gespeicherte Firmen und Kategorien
+* Zeitstempel `last_seen_at` für personalisierte Inhalte
+
+Beziehungen:
+
+* User ↔ Companies (gespeichert)
+* User ↔ Categories (gespeichert)
 
 ---
 
@@ -166,6 +181,14 @@ php artisan serve
 * Laravel Feature Tests
 * GitHub Actions Pipeline
 * Tests laufen auf PHP 8.2, 8.3 und 8.4
+
+Abgedeckte Bereiche:
+
+* Zugriffskontrolle (Guest / Visitor / User / Admin)
+* Job-Erstellung und Bearbeitung
+* gespeicherte Firmen und Kategorien
+* personalisierte Job-Vorschläge
+* Zustandsänderungen (z. B. „als gesehen markieren“)
 
 ---
 
