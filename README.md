@@ -158,6 +158,26 @@ Beziehungen:
 
 ---
 
+## Datenbankmodell (aktueller Stand)
+
+Das ursprüngliche Datenmodell wurde im Verlauf der Entwicklung erweitert.
+
+Neu hinzugekommen:
+- Pivot-Tabellen für gespeicherte Firmen und Kategorien (`company_user`, `category_user`)
+- `last_seen_at` im User zur Ermittlung neuer Jobs seit dem letzten Besuch
+
+![Aktuelles ER-Diagramm](## Datenbankmodell (aktueller Stand)
+
+Das ursprüngliche Datenmodell wurde im Verlauf der Entwicklung erweitert.
+
+Neu hinzugekommen:
+- Pivot-Tabellen für gespeicherte Firmen und Kategorien (`company_user`, `category_user`)
+- `last_seen_at` im User zur Ermittlung neuer Jobs seit dem letzten Besuch
+
+![Aktuelles ER-Diagramm](docs/workbench_modellierung_aktuell.png)
+
+---
+
 ### Installation
 
 ```bash

@@ -257,6 +257,9 @@ Diese ermöglichen:
 * Zustandsverwaltung pro Benutzer
 * Erweiterbarkeit für zukünftige Features (z. B. gespeicherte Jobs)
 
+Das Datenmodell wurde während der Entwicklung erweitert.
+Die aktuelle Struktur ist im ER-Diagramm im Ordner /docs dokumentiert.
+
 ---
 
 ## Erweiterbarkeit
