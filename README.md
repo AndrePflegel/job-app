@@ -247,45 +247,203 @@ Abgedeckte Bereiche:
 
 ### Description
 
-This project is a web-based job board application built with Laravel.
+This application is a web-based job board for managing and displaying job listings.
 
-It supports public access without login as well as role-based internal management.
+The platform can be used publicly without login and additionally provides a role-based access system for internal users.
+
+The goal of the project was to develop a structured and extensible Laravel application.
 
 ---
 
 ### Features
 
-* Role-based access control
-* CRUD operations for job listings
-* Admin management for companies and categories
-* Filtering system
+* Role-based access system (Guest, Visitor, User, Admin)
+* CRUD functionality for job listings
+* Management of companies and categories by admins
+* Filtering by company and category
 * Pagination with state persistence
-* CI pipeline with automated tests
+* “My Jobs” area for logged-in users
+* Caching to reduce database queries
+* Automated tests with CI (GitHub Actions)
+* Personalized dashboard for visitors
+* Saving companies and categories
+* Display of new matching jobs based on interests
+* Time-based detection of new content (`last_seen_at`)
 
 ---
 
-### Tech Stack
+### Roles
 
-* PHP / Laravel
+**Guest (not logged in)**
+
+* View job listings
+* Use filters
+
+**Visitor (logged in)**
+
+* same basic permissions as guest
+* additionally:
+    * personal dashboard
+    * save companies and categories
+    * view new matching jobs
+
+**User**
+
+* Create jobs
+* Edit and delete jobs (role-based, optionally team-oriented)
+
+**Admin**
+
+* Full control over all data
+* Manage companies and categories
+
+---
+
+### Features in Detail
+
+**Job Listings**
+
+* Overview of all jobs
+* Detail view
+* Creation, editing, and deletion (role-based)
+
+**Filters**
+
+* Filter by company
+* Filter by category
+* combinable
+* state persists during pagination
+
+**Usability**
+
+* Pagination for large datasets
+* Return to previous page after actions
+* Scroll position is preserved
+
+**Performance**
+
+* Caching of job listings
+
+**Personalization (Visitor)**
+
+* Save companies and categories
+* Overview in dashboard
+* Display of new matching jobs
+* Manual refresh possible
+* Explicit marking as “seen”
+
+This feature provides a simple but effective personalization of the application.
+
+* XML sitemap for search engines (/sitemap.xml)
+* Visual sitemap for page structure (/sitemap)
+
+---
+
+### Technologies
+
+* PHP 8
+* Laravel
 * Blade Templates
 * MySQL / MariaDB
-* GitHub Actions
+* HTML / CSS
+* GitHub Actions (CI)
+* SQLite (local development and testing)
+
+* Service classes for business logic (e.g. VisitorMatchingJobsService)
 
 ---
 
-### Setup
+### Database
 
-```bash
+Relational database with the following tables:
+
+* Users
+* Jobs
+* Companies
+* Categories
+
+Properties:
+
+* Relationships between jobs, companies, and categories
+* Companies and categories can only be deleted if no dependent jobs exist
+* Implemented via Laravel migrations
+
+Additionally:
+
+* Pivot tables for saved companies and categories
+* Timestamp `last_seen_at` for personalized content
+
+Relationships:
+
+* User ↔ Companies (saved)
+* User ↔ Categories (saved)
+
+---
+
+## Database Model (current state)
+
+The original data model was extended during development.
+
+New additions:
+- Pivot tables for saved companies and categories (`company_user`, `category_user`)
+- `last_seen_at` in the user model to detect new jobs since the last visit
+
+---
+
+### Installation
+
+git clone https://github.com/AndrePflegel/job-app.git
+cd job-app
+
 composer install
 cp .env.example .env
 php artisan key:generate
+
 php artisan migrate
 php artisan db:seed
+
 php artisan serve
-```
+
+### Tests
+* Laravel Feature Tests
+* GitHub Actions pipeline
+* Tests run on PHP 8.2, 8.3 and 8.4
+
+** Covered areas: **
+
+* Access control (Guest / Visitor / User / Admin)
+* Job creation and editing
+* Saved companies and categories
+* Personalized job suggestions
+* State changes (e.g. mark as “seen”)
+* Service tests for extracted logic (e.g. matching logic and session behavior)
+
+** Security **
+* Password hashing
+* Role-based access control
+* Protection of sensitive files (.env, storage, vendor)
+ 
+
+** Test Accounts **
+Role    E-Mail          Password
+Admin	admin@test.de   password
+User	user@test.de    password
+Visitor	visitor@test.de password
 
 ---
 
-### Author
 
+** Possible Extensions **
+* Favorites feature
+* Advanced search
+* API integration
+* Email notifications
+* UI improvements
+* Saved jobs (favorites)
+* Notifications for new matching jobs
+* Individual search profiles
+* Real-time updates
+
+ 
+Author
 Andre Pflegel
