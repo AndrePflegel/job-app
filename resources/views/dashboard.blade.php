@@ -4,7 +4,6 @@
 
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100 space-y-4">
-
                     <div>
                         <h1 class="text-2xl font-semibold">Dashboard</h1>
                         <p class="text-sm opacity-75">
@@ -53,7 +52,9 @@
                     </div>
                 </div>
             </div>
-            @else
+            @endif
+
+            @can('create', App\Models\JobListing::class)
             <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
                 <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="p-6 text-gray-900 dark:text-gray-100">
@@ -62,7 +63,6 @@
                     </div>
                 </div>
 
-                @if(auth()->user()->isUser() || auth()->user()->isAdmin())
                 <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="p-6 text-gray-900 dark:text-gray-100">
                         <p class="text-sm opacity-75">Meine Jobs</p>
@@ -83,9 +83,11 @@
                         <p class="text-3xl font-bold">{{ $myInactiveJobsCount }}</p>
                     </div>
                 </div>
-                @endif
             </div>
-            @endif
+            @endcan
+
+            @can('unsave', App\Models\Company::first())
+            @endcan
 
             @if(auth()->user()->isVisitor())
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -114,11 +116,13 @@
                                         Jobs ansehen
                                     </a>
 
+                                    @can('unsave', $company)
                                     <form action="{{ route('saved-companies.destroy', $company->id) }}" method="POST">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-danger">Entfernen</button>
                                     </form>
+                                    @endcan
                                 </div>
                             </div>
                             @endforeach
@@ -152,11 +156,13 @@
                                         Jobs ansehen
                                     </a>
 
+                                    @can('unsave', $category)
                                     <form action="{{ route('saved-categories.destroy', $category->id) }}" method="POST">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-danger">Entfernen</button>
                                     </form>
+                                    @endcan
                                 </div>
                             </div>
                             @endforeach
@@ -218,9 +224,11 @@
                                 </p>
 
                                 <div class="mt-2">
+                                    @can('view', $job)
                                     <a href="{{ route('jobs.show', $job->id) }}" class="btn btn-secondary">
                                         Ansehen
                                     </a>
+                                    @endcan
                                 </div>
                             </div>
                             @endforeach
@@ -231,7 +239,7 @@
             </div>
             @endif
 
-            @if(auth()->user()->isUser() || auth()->user()->isAdmin())
+            @can('create', App\Models\JobListing::class)
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
                     <h3 class="text-lg font-semibold mb-4">Meine zuletzt bearbeiteten Jobs</h3>
@@ -254,7 +262,9 @@
                                             </span>
                             </p>
                             <div class="mt-2">
+                                @can('update', $job)
                                 <a href="{{ route('jobs.edit', $job->id) }}" class="btn btn-primary">Bearbeiten</a>
+                                @endcan
                             </div>
                         </div>
                         @endforeach
@@ -262,9 +272,9 @@
                     @endif
                 </div>
             </div>
-            @endif
+            @endcan
 
-            @if(auth()->user()->isAdmin())
+            @can('viewAny', App\Models\User::class)
             <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
                 <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="p-6 text-gray-900 dark:text-gray-100">
@@ -327,14 +337,25 @@
                 <div class="p-6 text-gray-900 dark:text-gray-100">
                     <h3 class="text-lg font-semibold mb-4">Schnellzugriffe</h3>
                     <div class="flex flex-wrap gap-3">
+                        @can('create', App\Models\JobListing::class)
                         <a href="{{ route('jobs.create') }}" class="btn btn-primary">Job erstellen</a>
+                        @endcan
+
+                        @can('viewAny', App\Models\User::class)
                         <a href="{{ route('admin.users.index') }}" class="btn btn-secondary">Benutzerverwaltung</a>
+                        @endcan
+
+                        @can('viewAny', App\Models\Company::class)
                         <a href="{{ route('companies.index') }}" class="btn btn-secondary">Firmen</a>
+                        @endcan
+
+                        @can('viewAny', App\Models\Category::class)
                         <a href="{{ route('categories.index') }}" class="btn btn-secondary">Kategorien</a>
+                        @endcan
                     </div>
                 </div>
             </div>
-            @endif
+            @endcan
 
         </div>
     </div>

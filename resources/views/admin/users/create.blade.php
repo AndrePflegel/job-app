@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+@can('create', App\Models\User::class)
 <h1>Benutzer anlegen</h1>
 
 @if ($errors->any())
@@ -51,4 +52,5 @@
         <a href="{{ route('admin.users.index') }}" class="btn btn-secondary">Abbrechen</a>
     </div>
 </form>
+@endcan
 @endsection

@@ -12,7 +12,8 @@ Im weiteren Verlauf wurde die Anwendung durch Tests, CI/CD und strukturelle Verb
 
 * Laravel (Backend, Routing, Auth, ORM)
 * Blade Templates (Frontend)
-* MySQL / MariaDB in diesem Fall lokal SQLlite (Datenbank)
+* SQLite lokal für Entwicklung und Tests
+* MySQL / MariaDB optional für produktionsnahe Umgebungen
 * Git & GitHub (Versionskontrolle)
 * GitHub Actions (CI/CD)
 * Composer (Dependency Management)
@@ -173,6 +174,9 @@ Gerade solche Situationen sind typisch für reale Projekte.
 * Automatisierte Tests erhöhen die Qualität erheblich
 * CI/CD gehört zum modernen Entwicklungsprozess dazu
 * saubere Struktur spart später viel Zeit
+* Berechtigungslogik sollte zentral organisiert sein
+* Laravel Policies verbessern Wartbarkeit und Testbarkeit deutlich
+* Views sollten sichtbare Aktionen über `@can(...)` an dieselben Regeln koppeln wie Controller
 
 
 ---
@@ -236,6 +240,33 @@ Ergebnis:
 * reproduzierbares Verhalten
 
 ---
+
+### 11. Umstellung der Autorisierung auf Policies
+
+Im späteren Verlauf wurde die Berechtigungslogik überarbeitet.
+
+Vorher:
+
+* einzelne Berechtigungsprüfungen waren teilweise im `User`-Model, in Controllern und in Blade-Views verteilt
+* dadurch war die Logik funktional, aber nicht zentral organisiert
+
+Umstellung:
+
+* Einführung bzw. konsequente Nutzung von Laravel Policies
+* Controller nutzen `authorize(...)`
+* Blade-Templates nutzen `@can(...)`
+* alte Modell-Helfer für Berechtigungen wurden entfernt
+
+Ergebnis:
+
+* Berechtigungen sind jetzt an einer zentralen Stelle definiert
+* Änderungen müssen nicht mehr an mehreren Stellen gleichzeitig vorgenommen werden
+* Tests prüfen die echte Autorisierungslogik statt alter Hilfsmethoden
+
+**Erkenntnis:**
+
+Autorisierung sollte in Laravel möglichst konsistent über Policies umgesetzt werden, weil das die Anwendung verständlicher, wartbarer und robuster macht.
+
 
 ## Wichtige Erkenntnis aus diesem Abschnitt
 

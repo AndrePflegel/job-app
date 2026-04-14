@@ -9,27 +9,21 @@ class SavedCategoryController extends Controller
 {
     public function store(Request $request, Category $category)
     {
-        $user = auth()->user();
+        $this->authorize('save', $category);
 
-        if (!$user || !$user->isVisitor()) {
-            abort(403, 'Nur Visitor können Kategorien speichern.');
-        }
+        $request->user()->savedCategories()->syncWithoutDetaching([$category->id]);
 
-        $user->savedCategories()->syncWithoutDetaching([$category->id]);
-
-        return redirect()->back()->with('success', 'Kategorie wurde gespeichert.');
+        return redirect()->back()
+            ->with('success', 'Kategorie wurde gespeichert.');
     }
 
     public function destroy(Request $request, Category $category)
     {
-        $user = auth()->user();
+        $this->authorize('unsave', $category);
 
-        if (!$user || !$user->isVisitor()) {
-            abort(403, 'Nur Visitor können gespeicherte Kategorien verwalten.');
-        }
+        $request->user()->savedCategories()->detach($category->id);
 
-        $user->savedCategories()->detach($category->id);
-
-        return redirect()->back()->with('success', 'Kategorie wurde aus deinen gemerkten Kategorien entfernt.');
+        return redirect()->back()
+            ->with('success', 'Kategorie wurde aus deinen gemerkten Kategorien entfernt.');
     }
 }

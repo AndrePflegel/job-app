@@ -1,7 +1,19 @@
 @extends('layouts.app')
 
 @section('content')
+@can('update', $job)
 <h1 style="margin-bottom: 24px;">Jobanzeige bearbeiten</h1>
+
+@if ($errors->any())
+<div style="background: #ffe5e5; color: #8a1f1f; padding: 15px; margin-bottom: 20px; border: 1px solid #d99; border-radius: 8px;">
+    <strong>Bitte prüfe deine Eingaben:</strong>
+    <ul style="margin-top: 10px; padding-left: 20px;">
+        @foreach ($errors->all() as $error)
+        <li>{{ $error }}</li>
+        @endforeach
+    </ul>
+</div>
+@endif
 
 <form action="{{ route('jobs.update', $job->id) }}" method="POST">
     @csrf
@@ -71,6 +83,7 @@
 </form>
 
 <div class="action-row">
+    @can('delete', $job)
     <form action="{{ route('jobs.destroy', $job->id) }}" method="POST" style="display: inline;">
         @csrf
         @method('DELETE')
@@ -79,7 +92,9 @@
             Löschen
         </button>
     </form>
+    @endcan
 
     <a class="btn btn-secondary" href="{{ request('return', route('jobs.index')) }}">Zurück zur Liste</a>
 </div>
+@endcan
 @endsection

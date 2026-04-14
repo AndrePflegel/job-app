@@ -15,8 +15,8 @@
 
     <p><strong>Firma:</strong> {{ optional($job->company)->name ?? 'Ohne Firma' }}</p>
 
-    @auth
-    @if (auth()->user()->isVisitor() && $job->company)
+    @can('save', $job->company)
+    @if ($job->company)
     <div style="margin: 10px 0 14px 0;">
         @if (auth()->user()->hasSavedCompany($job->company))
         <form class="inline-form" action="{{ route('saved-companies.destroy', $job->company->id) }}" method="POST">
@@ -32,12 +32,12 @@
         @endif
     </div>
     @endif
-    @endauth
+    @endcan
 
     <p><strong>Kategorie:</strong> {{ optional($job->category)->name ?? 'Ohne Kategorie' }}</p>
 
-    @auth
-    @if (auth()->user()->isVisitor() && $job->category)
+    @can('save', $job->category)
+    @if ($job->category)
     <div style="margin: 10px 0 14px 0;">
         @if (auth()->user()->hasSavedCategory($job->category))
         <form class="inline-form" action="{{ route('saved-categories.destroy', $job->category->id) }}" method="POST">
@@ -53,39 +53,39 @@
         @endif
     </div>
     @endif
-    @endauth
+    @endcan
+
     <p><strong>Ort:</strong> {{ $job->location }}</p>
     <p><strong>Gehalt:</strong> {{ $job->salary }}</p>
-    @auth
-    @if (auth()->user()->canSeeInternalEditorInfo())
-    <p><strong>Erstellt von:</strong> {{ optional($job->user)->name ?? 'Unbekannt' }}</p>
-    @endif
-    @endauth
 
-    @auth
-    @if (auth()->user()->canSeeInternalEditorInfo())
+    @can('viewInternalFields', $job)
+    <p><strong>Erstellt von:</strong> {{ optional($job->user)->name ?? 'Unbekannt' }}</p>
+    @endcan
+
+    @can('viewInternalFields', $job)
     <p>
         <strong>Status:</strong>
         <span style="color: {{ $job->is_active ? '#1f6b3b' : '#b91c1c' }}; font-weight: 600;">
                 {{ $job->is_active ? 'Aktiv' : 'Inaktiv' }}
             </span>
     </p>
-    @endif
-    @endauth
+    @endcan
 
     <div class="action-row">
-        @auth
-        @if (auth()->user()->canManageJob($job))
-        <a class="btn btn-primary" href="{{ route('jobs.edit', ['job' => $job->id, 'return' => request('return', request()->fullUrl())]) }}">Bearbeiten</a>
+        @can('update', $job)
+        <a class="btn btn-primary" href="{{ route('jobs.edit', ['job' => $job->id, 'return' => request('return', request()->fullUrl())]) }}">
+            Bearbeiten
+        </a>
+        @endcan
 
+        @can('delete', $job)
         <form class="inline-form" action="{{ route('jobs.destroy', ['job' => $job->id]) }}" method="POST" onsubmit="return confirm('Möchtest du diese Jobanzeige wirklich löschen?');">
             @csrf
             @method('DELETE')
             <button class="btn btn-danger" type="submit">Löschen</button>
             <input type="hidden" name="return" value="{{ request('return', request()->fullUrl()) }}">
         </form>
-        @endif
-        @endauth
+        @endcan
 
         <a class="btn btn-secondary" href="{{ request('return', route('jobs.index')) }}">Zurück</a>
     </div>

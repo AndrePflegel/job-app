@@ -21,6 +21,8 @@ Ziel des Projekts war die Entwicklung einer strukturierten und erweiterbaren Lar
 ### Funktionen
 
 * Rollenbasiertes Zugriffssystem (Guest, Visitor, User, Admin)
+* Zentrale Autorisierung über Laravel Policies
+* Konsistente UI-Freigaben über Blade `@can(...)`
 * CRUD-Funktionalität für Jobanzeigen
 * Verwaltung von Firmen und Kategorien durch Admins
 * Filter nach Firma und Kategorie
@@ -53,7 +55,8 @@ Ziel des Projekts war die Entwicklung einer strukturierten und erweiterbaren Lar
 **User**
 
 * Jobs erstellen
-* Jobs bearbeiten und löschen (rollenbasiert, auch teamorientiert möglich)
+* Jobs bearbeiten und löschen
+* teamorientierte Bearbeitung und Löschung auch fremder interner Jobs möglich
 
 **Admin**
 
@@ -199,6 +202,8 @@ php artisan serve
 * GitHub Actions Pipeline
 * Tests laufen auf PHP 8.2, 8.3 und 8.4
 
+
+
 Abgedeckte Bereiche:
 
 * Zugriffskontrolle (Guest / Visitor / User / Admin)
@@ -206,6 +211,8 @@ Abgedeckte Bereiche:
 * gespeicherte Firmen und Kategorien
 * personalisierte Job-Vorschläge
 * Zustandsänderungen (z. B. „als gesehen markieren“)
+* Policy-basierte Zugriffskontrolle
+* rollenabhängige CRUD-Freigaben
 
 * Service-Tests für ausgelagerte Logik (z. B. Matching-Logik und Session-Verhalten)
 
@@ -215,6 +222,7 @@ Abgedeckte Bereiche:
 
 * Passwort-Hashing
 * Rollenbasierte Zugriffskontrolle
+* Zentrale Autorisierung über Laravel Policies
 * Schutz sensibler Dateien (.env, storage, vendor)
 
 ---
@@ -269,6 +277,8 @@ The goal of the project was to develop a structured and extensible Laravel appli
 * Saving companies and categories
 * Display of new matching jobs based on interests
 * Time-based detection of new content (`last_seen_at`)
+* Centralized authorization via Laravel Policies
+* Consistent UI visibility through Blade `@can(...)`
 
 ---
 
@@ -287,10 +297,12 @@ The goal of the project was to develop a structured and extensible Laravel appli
     * save companies and categories
     * view new matching jobs
 
+
 **User**
 
 * Create jobs
-* Edit and delete jobs (role-based, optionally team-oriented)
+* Edit and delete jobs
+* Team-oriented editing and deletion of jobs by internal users
 
 **Admin**
 

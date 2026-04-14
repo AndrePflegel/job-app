@@ -1,11 +1,18 @@
 @extends('layouts.app')
 
 @section('content')
+@can('update', $user)
 <h1>Benutzer bearbeiten</h1>
 
 @if (session('success'))
 <div style="background: #e6ffed; color: #176b3a; padding: 15px; margin-bottom: 20px; border: 1px solid #b7ebc6; border-radius: 8px;">
     {{ session('success') }}
+</div>
+@endif
+
+@if (session('error'))
+<div style="background: #ffe5e5; color: #8a1f1f; padding: 15px; margin-bottom: 20px; border: 1px solid #d99; border-radius: 8px;">
+    {{ session('error') }}
 </div>
 @endif
 
@@ -58,4 +65,17 @@
         <a href="{{ route('admin.users.index') }}" class="btn btn-secondary">Zurück</a>
     </div>
 </form>
+
+@can('delete', $user)
+<div class="action-row" style="margin-top: 16px;">
+    <form action="{{ route('admin.users.destroy', $user->id) }}" method="POST" style="display:inline;">
+        @csrf
+        @method('DELETE')
+        <button type="submit" class="btn btn-danger" onclick="return confirm('Willst du diesen Benutzer wirklich löschen?')">
+            Löschen
+        </button>
+    </form>
+</div>
+@endcan
+@endcan
 @endsection

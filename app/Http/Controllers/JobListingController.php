@@ -41,17 +41,11 @@ class JobListingController extends Controller
         return view('jobs.index', compact('jobs', 'companies', 'categories'));
     }
 
-    public function show($id)
+    public function show(JobListing $job)
     {
-        $job = JobListing::with('company', 'category', 'user')->findOrFail($id);
+        $job->load('company', 'category', 'user');
 
-        if (!$job->is_active) {
-            $user = auth()->user();
-
-            if (!$user || !($user->isAdmin() || $user->isUser())) {
-                abort(404);
-            }
-        }
+        $this->authorize('view', $job);
 
         return view('jobs.show', compact('job'));
     }
@@ -87,13 +81,12 @@ class JobListingController extends Controller
 
         Cache::flush();
 
-        return redirect($request->input('return', route('jobs.show', $job->id)))
+        return redirect($request->input('return', route('jobs.show', $job)))
             ->with('success', 'Jobanzeige erfolgreich erstellt.');
     }
 
-    public function edit($id)
+    public function edit(JobListing $job)
     {
-        $job = JobListing::findOrFail($id);
         $this->authorize('update', $job);
 
         $companies = Company::orderBy('name')->get();
@@ -102,9 +95,8 @@ class JobListingController extends Controller
         return view('jobs.edit', compact('job', 'companies', 'categories'));
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, JobListing $job)
     {
-        $job = JobListing::findOrFail($id);
         $this->authorize('update', $job);
 
         $validated = $request->validate([
@@ -124,13 +116,12 @@ class JobListingController extends Controller
         Cache::flush();
 
         return redirect()
-            ->route('jobs.edit', $job->id)
+            ->route('jobs.edit', $job)
             ->with('success', 'Jobanzeige erfolgreich aktualisiert.');
     }
 
-    public function destroy(Request $request, $id)
+    public function destroy(Request $request, JobListing $job)
     {
-        $job = JobListing::findOrFail($id);
         $this->authorize('delete', $job);
 
         $job->delete();
@@ -143,6 +134,8 @@ class JobListingController extends Controller
 
     public function myJobs()
     {
+        $this->authorize('create', JobListing::class);
+
         $jobs = JobListing::where('user_id', auth()->id())
             ->with('company', 'category', 'user')
             ->latest()

@@ -7,14 +7,9 @@ use Illuminate\Http\Request;
 
 class AdminUserController extends Controller
 {
-    private function ensureAdmin(): void
-    {
-        abort_unless(auth()->check() && auth()->user()->isAdmin(), 403);
-    }
-
     public function index()
     {
-        $this->ensureAdmin();
+        $this->authorize('viewAny', User::class);
 
         $users = User::orderBy('name')->get();
 
@@ -23,14 +18,14 @@ class AdminUserController extends Controller
 
     public function create()
     {
-        $this->ensureAdmin();
+        $this->authorize('create', User::class);
 
         return view('admin.users.create');
     }
 
     public function store(Request $request)
     {
-        $this->ensureAdmin();
+        $this->authorize('create', User::class);
 
         $validated = $request->validate([
             'name' => 'required|string|max:255',
@@ -47,14 +42,14 @@ class AdminUserController extends Controller
 
     public function edit(User $user)
     {
-        $this->ensureAdmin();
+        $this->authorize('update', $user);
 
         return view('admin.users.edit', compact('user'));
     }
 
     public function update(Request $request, User $user)
     {
-        $this->ensureAdmin();
+        $this->authorize('update', $user);
 
         $validated = $request->validate([
             'name' => 'required|string|max:255',
@@ -72,26 +67,26 @@ class AdminUserController extends Controller
             $validated['role'] !== 'admin' &&
             User::where('role', 'admin')->count() <= 1
         ) {
-            return redirect()->route('admin.users.edit', $user->id)
+            return redirect()->route('admin.users.edit', $user)
                 ->with('error', 'Der letzte Admin kann nicht auf eine andere Rolle geändert werden.');
         }
 
         $user->update($validated);
 
-        return redirect()->route('admin.users.edit', $user->id)
+        return redirect()->route('admin.users.edit', $user)
             ->with('success', 'Benutzer erfolgreich aktualisiert.');
     }
 
     public function destroy(User $user)
     {
-        $this->ensureAdmin();
+        $this->authorize('delete', $user);
 
         if (auth()->id() === $user->id) {
             return redirect()->route('admin.users.index')
                 ->with('error', 'Du kannst deinen eigenen Account nicht löschen.');
         }
 
-        $lastAdmin = User::where('role', 'admin')->count() <= 1 && $user->role === 'admin';
+        $lastAdmin = $user->role === 'admin' && User::where('role', 'admin')->count() <= 1;
 
         if ($lastAdmin) {
             return redirect()->route('admin.users.index')

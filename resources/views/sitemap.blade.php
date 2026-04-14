@@ -6,8 +6,10 @@
 
     @foreach ($jobs as $job)
     <url>
-        <loc>{{ url('/jobs/' . $job->id) }}</loc>
+        <loc>{{ route('jobs.show', $job) }}</loc>
+        @if ($job->updated_at)
         <lastmod>{{ $job->updated_at->toAtomString() }}</lastmod>
+        @endif
     </url>
     @endforeach
 </urlset>

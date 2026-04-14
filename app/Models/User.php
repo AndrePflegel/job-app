@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -12,7 +11,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class User extends Authenticatable
 {
-    /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
 
     protected $fillable = [
@@ -42,6 +40,7 @@ class User extends Authenticatable
         return $this->hasMany(JobListing::class);
     }
 
+    // Rollen-Helper (OK im Model)
     public function isAdmin(): bool
     {
         return $this->role === 'admin';
@@ -57,29 +56,10 @@ class User extends Authenticatable
         return $this->role === 'visitor';
     }
 
-    public function canCreateJobs(): bool
-    {
-        return $this->isAdmin() || $this->isUser();
-    }
-
-    public function canManageJob(JobListing $job): bool
-    {
-        return in_array($this->role, ['admin', 'user']);
-    }
-
-    public function canSeeInternalEditorInfo(): bool
-    {
-        return $this->isAdmin() || $this->isUser();
-    }
-
+    // Beziehungen
     public function savedCompanies(): BelongsToMany
     {
         return $this->belongsToMany(Company::class)->withTimestamps();
-    }
-
-    public function hasSavedCompany(Company $company): bool
-    {
-        return $this->savedCompanies()->where('company_id', $company->id)->exists();
     }
 
     public function savedCategories(): BelongsToMany
@@ -87,8 +67,18 @@ class User extends Authenticatable
         return $this->belongsToMany(Category::class)->withTimestamps();
     }
 
+    // Zustand (kein Auth → OK)
+    public function hasSavedCompany(Company $company): bool
+    {
+        return $this->savedCompanies()
+            ->where('company_id', $company->id)
+            ->exists();
+    }
+
     public function hasSavedCategory(Category $category): bool
     {
-        return $this->savedCategories()->where('category_id', $category->id)->exists();
+        return $this->savedCategories()
+            ->where('category_id', $category->id)
+            ->exists();
     }
 }

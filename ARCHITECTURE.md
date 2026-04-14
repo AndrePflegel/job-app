@@ -22,15 +22,15 @@ Die Anwendung basiert auf dem MVC-Pattern (Model-View-Controller), welches im La
 
 ### Model (Eloquent ORM im Detail)
 
-Die Models basieren auf Laravel Eloquent ORM und bilden nicht nur Tabellen ab,
-sondern enthalten auch Geschäftslogik und Beziehungen.
+Die Models basieren auf Laravel Eloquent ORM und bilden Tabellen, Beziehungen und Zustände der Anwendung ab.
 
 Wichtige Models:
 
 * **User**
-    * enthält Rollenlogik (`isAdmin()`, `isUser()`, `isVisitor()`)
+    * enthält einfache Rollen-Helper (`isAdmin()`, `isUser()`, `isVisitor()`)
     * verwaltet Beziehungen zu Jobs, Firmen und Kategorien
-    * enthält Feld `last_seen_at` für personalisierte Inhalte
+    * enthält das Feld `last_seen_at` für personalisierte Inhalte
+    * speichert keine zentrale Berechtigungslogik mehr direkt im Model
 
 * **JobListing**
     * zentrale Entität der Anwendung
@@ -120,8 +120,22 @@ Der `DashboardController`:
 
 ## Autorisierung
 
-* Umsetzung über Laravel Policies
-* Zugriff abhängig von Benutzerrolle
+Die Autorisierung wird zentral über Laravel Policies umgesetzt.
+
+Die Anwendung nutzt unter anderem:
+
+* `JobListingPolicy`
+* `CompanyPolicy`
+* `CategoryPolicy`
+* `UserPolicy`
+
+Prinzip:
+
+* **Policies** definieren die Berechtigungsregeln
+* **Controller** setzen diese Regeln mit `authorize(...)` durch
+* **Blade Views** nutzen `@can(...)`, damit sichtbare Aktionen und echte Berechtigungen konsistent bleiben
+
+Dadurch müssen Berechtigungen nur an einer zentralen Stelle angepasst werden.
 
 ---
 
@@ -194,10 +208,16 @@ Die Anwendung nutzt ein rollenbasiertes Zugriffssystem mit folgenden Rollen:
 * User (interne Mitarbeiter)
 * Admin (vollständige Kontrolle)
 
-Die Zugriffskontrolle erfolgt über:
+Die Zugriffskontrolle erfolgt zentral über Laravel Policies.
 
-* Laravel Policies
-* zusätzliche Logik in Controllern und Views
+Beispiele:
+
+* Visitor dürfen Firmen und Kategorien speichern
+* User und Admin dürfen Jobs erstellen
+* User und Admin dürfen Jobs teamorientiert auch gegenseitig bearbeiten und löschen
+* Admins verwalten Firmen, Kategorien und Benutzer
+
+Views verwenden dafür `@can(...)`, Controller `authorize(...)`.
 
 ---
 

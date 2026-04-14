@@ -10,6 +10,10 @@ use App\Services\VisitorMatchingJobsService;
 
 class DashboardController extends Controller
 {
+    public function __construct(
+        private VisitorMatchingJobsService $visitorMatchingJobsService
+    ) {}
+
     public function index()
     {
         $currentUser = auth()->user();
@@ -19,24 +23,28 @@ class DashboardController extends Controller
         ];
 
         if ($currentUser->isVisitor()) {
-
-
             $data['savedCompanies'] = $currentUser->savedCompanies()
-                ->withCount(['jobListings' => function ($query) {
-                    $query->where('is_active', true);
-                }])
+                ->withCount([
+                    'jobListings' => function ($query) {
+                        $query->where('is_active', true);
+                    }
+                ])
                 ->orderBy('name')
                 ->get();
 
             $data['savedCategories'] = $currentUser->savedCategories()
-                ->withCount(['jobListings' => function ($query) {
-                    $query->where('is_active', true);
-                }])
+                ->withCount([
+                    'jobListings' => function ($query) {
+                        $query->where('is_active', true);
+                    }
+                ])
                 ->orderBy('name')
                 ->get();
 
             if (!session()->has('dashboard_reference_seen_at')) {
-                session(['dashboard_reference_seen_at' => $currentUser->last_seen_at]);
+                session([
+                    'dashboard_reference_seen_at' => $currentUser->last_seen_at,
+                ]);
             }
 
             $referenceSeenAt = session('dashboard_reference_seen_at');
@@ -56,6 +64,7 @@ class DashboardController extends Controller
             $data['myInactiveJobsCount'] = JobListing::where('user_id', $currentUser->id)
                 ->where('is_active', false)
                 ->count();
+
             $data['latestMyJobs'] = JobListing::with('company', 'category')
                 ->where('user_id', $currentUser->id)
                 ->latest()
@@ -74,20 +83,14 @@ class DashboardController extends Controller
             $data['visitorsCount'] = User::where('role', 'visitor')->count();
         }
 
-
-
         return view('dashboard', $data);
-
-
     }
 
     public function refreshMatchingJobs()
     {
         $currentUser = auth()->user();
 
-        if (!$currentUser || !$currentUser->isVisitor()) {
-            abort(403, 'Nur Visitor können neue passende Jobs aktualisieren.');
-        }
+        abort_unless($currentUser && $currentUser->isVisitor(), 403, 'Nur Visitor können neue passende Jobs aktualisieren.');
 
         return redirect()->route('dashboard')
             ->with('success', 'Neue passende Jobs wurden aktualisiert.');
@@ -97,21 +100,17 @@ class DashboardController extends Controller
     {
         $currentUser = auth()->user();
 
-        if (!$currentUser || !$currentUser->isVisitor()) {
-            abort(403, 'Nur Visitor können passende Jobs als gesehen markieren.');
-        }
+        abort_unless($currentUser && $currentUser->isVisitor(), 403, 'Nur Visitor können passende Jobs als gesehen markieren.');
 
         $this->visitorMatchingJobsService->markAsSeen($currentUser);
 
         $currentUser->refresh();
 
-        session(['dashboard_reference_seen_at' => $currentUser->last_seen_at]);
+        session([
+            'dashboard_reference_seen_at' => $currentUser->last_seen_at,
+        ]);
 
         return redirect()->route('dashboard')
             ->with('success', 'Der Stand wurde übernommen. Neue passende Jobs werden ab jetzt neu erfasst.');
     }
-
-    public function __construct(
-        private VisitorMatchingJobsService $visitorMatchingJobsService
-    ) {}
 }

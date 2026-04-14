@@ -38,15 +38,13 @@
     </form>
 </div>
 
-@auth
-@if (auth()->user()->canCreateJobs())
+@can('create', App\Models\JobListing::class)
 <p style="margin-bottom: 20px;">
     <a class="btn btn-primary" href="{{ route('jobs.create') }}">
         + Neue Jobanzeige erstellen
     </a>
 </p>
-@endif
-@endauth
+@endcan
 
 @if (session('success'))
 <div style="background: #e6ffed; color: #1f6b3b; padding: 15px; margin-bottom: 20px; border: 1px solid #a6d8b8;">
@@ -67,8 +65,8 @@
 
     <p><strong>Firma:</strong> {{ optional($job->company)->name ?? 'Ohne Firma' }}</p>
 
-    @auth
-    @if (auth()->user()->isVisitor() && $job->company)
+    @can('save', $job->company)
+    @if ($job->company)
     <div style="margin: 10px 0 14px 0;">
         @if (auth()->user()->hasSavedCompany($job->company))
         <form class="inline-form" action="{{ route('saved-companies.destroy', $job->company->id) }}" method="POST">
@@ -84,12 +82,12 @@
         @endif
     </div>
     @endif
-    @endauth
+    @endcan
 
     <p><strong>Kategorie:</strong> {{ optional($job->category)->name ?? 'Ohne Kategorie' }}</p>
 
-    @auth
-    @if (auth()->user()->isVisitor() && $job->category)
+    @can('save', $job->category)
+    @if ($job->category)
     <div style="margin: 10px 0 14px 0;">
         @if (auth()->user()->hasSavedCategory($job->category))
         <form class="inline-form" action="{{ route('saved-categories.destroy', $job->category->id) }}" method="POST">
@@ -105,50 +103,49 @@
         @endif
     </div>
     @endif
-    @endauth
+    @endcan
 
     <p><strong>Ort:</strong> {{ $job->location }}</p>
     <p><strong>Gehalt:</strong> {{ $job->salary }}</p>
-    @auth
-    @if (auth()->user()->canSeeInternalEditorInfo())
-    <p><strong>Erstellt von:</strong> {{ optional($job->user)->name ?? 'Unbekannt' }}</p>
-    @endif
-    @endauth
 
-    @auth
-    @if (auth()->user()->canSeeInternalEditorInfo())
+    @can('viewInternalFields', $job)
+    <p><strong>Erstellt von:</strong> {{ optional($job->user)->name ?? 'Unbekannt' }}</p>
+    @endcan
+
+    @can('viewInternalFields', $job)
     <p>
         <strong>Status:</strong>
         <span style="color: {{ $job->is_active ? '#1f6b3b' : '#b91c1c' }}; font-weight: 600;">
-                {{ $job->is_active ? 'Aktiv' : 'Inaktiv' }}
-            </span>
+                    {{ $job->is_active ? 'Aktiv' : 'Inaktiv' }}
+                </span>
     </p>
-    @endif
-    @endauth
+    @endcan
 
     <div class="action-row">
+        @can('view', $job)
         <a class="btn btn-secondary"
            href="{{ route('jobs.show', ['job' => $job->id, 'return' => request()->fullUrl()]) }}"
            onclick="sessionStorage.setItem('jobs_index_url', window.location.pathname + window.location.search); sessionStorage.setItem('jobs_index_scroll', window.scrollY);">
             Ansehen
         </a>
+        @endcan
 
-        @auth
-        @if (auth()->user()->canManageJob($job))
+        @can('update', $job)
         <a class="btn btn-primary"
            href="{{ route('jobs.edit', ['job' => $job->id, 'return' => request()->fullUrl()]) }}"
            onclick="sessionStorage.setItem('jobs_index_url', window.location.pathname + window.location.search); sessionStorage.setItem('jobs_index_scroll', window.scrollY);">
             Bearbeiten
         </a>
+        @endcan
 
+        @can('delete', $job)
         <form class="inline-form" action="{{ route('jobs.destroy', ['job' => $job->id]) }}" method="POST" onsubmit="return confirm('Möchtest du diese Jobanzeige wirklich löschen?');">
             @csrf
             @method('DELETE')
             <button class="btn btn-danger" type="submit">Löschen</button>
             <input type="hidden" name="return" value="{{ request()->fullUrl() }}">
         </form>
-        @endif
-        @endauth
+        @endcan
     </div>
 </div>
 @empty

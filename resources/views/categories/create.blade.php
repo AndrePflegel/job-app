@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+@can('create', App\Models\Category::class)
 <h1 class="page-title">Neue Kategorie anlegen</h1>
 
 @if ($errors->any())
@@ -29,4 +30,5 @@
         </div>
     </form>
 </div>
+@endcan
 @endsection

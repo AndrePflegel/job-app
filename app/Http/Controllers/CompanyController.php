@@ -9,7 +9,7 @@ class CompanyController extends Controller
 {
     public function index()
     {
-        $this->authorizeAdmin();
+        $this->authorize('viewAny', Company::class);
 
         $companies = Company::withCount('jobListings')
             ->orderBy('name')
@@ -20,14 +20,14 @@ class CompanyController extends Controller
 
     public function create()
     {
-        $this->authorizeAdmin();
+        $this->authorize('create', Company::class);
 
         return view('companies.create');
     }
 
     public function store(Request $request)
     {
-        $this->authorizeAdmin();
+        $this->authorize('create', Company::class);
 
         $validated = $request->validate([
             'name' => 'required|string|max:255|unique:companies,name',
@@ -43,14 +43,14 @@ class CompanyController extends Controller
 
     public function edit(Company $company)
     {
-        $this->authorizeAdmin();
+        $this->authorize('update', $company);
 
         return view('companies.edit', compact('company'));
     }
 
     public function update(Request $request, Company $company)
     {
-        $this->authorizeAdmin();
+        $this->authorize('update', $company);
 
         $validated = $request->validate([
             'name' => 'required|string|max:255|unique:companies,name,' . $company->id,
@@ -66,7 +66,7 @@ class CompanyController extends Controller
 
     public function destroy(Company $company)
     {
-        $this->authorizeAdmin();
+        $this->authorize('delete', $company);
 
         if ($company->jobListings()->exists()) {
             return redirect()->route('companies.index')
@@ -77,14 +77,5 @@ class CompanyController extends Controller
 
         return redirect()->route('companies.index')
             ->with('success', 'Firma erfolgreich gelöscht.');
-    }
-
-    private function authorizeAdmin(): void
-    {
-        $user = auth()->user();
-
-        if (!$user || !$user->isAdmin()) {
-            abort(403, 'Nur Admins dürfen Firmen verwalten.');
-        }
     }
 }

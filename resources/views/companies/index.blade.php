@@ -15,9 +15,11 @@
 </div>
 @endif
 
+@can('create', App\Models\Company::class)
 <p style="margin-bottom: 20px;">
     <a class="btn btn-primary" href="{{ route('companies.create') }}">+ Neue Firma anlegen</a>
 </p>
+@endcan
 
 @forelse($companies as $company)
 <div class="job-card">
@@ -28,13 +30,17 @@
     <p><strong>Zugeordnete Jobs:</strong> {{ $company->job_listings_count }}</p>
 
     <div class="action-row">
+        @can('update', $company)
         <a class="btn btn-primary" href="{{ route('companies.edit', $company->id) }}">Bearbeiten</a>
+        @endcan
 
+        @can('delete', $company)
         <form class="inline-form" action="{{ route('companies.destroy', $company->id) }}" method="POST" onsubmit="return confirm('Möchtest du diese Firma wirklich löschen?');">
             @csrf
             @method('DELETE')
             <button class="btn btn-danger" type="submit">Löschen</button>
         </form>
+        @endcan
     </div>
 </div>
 @empty

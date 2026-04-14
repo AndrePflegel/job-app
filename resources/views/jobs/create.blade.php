@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+@can('create', App\Models\JobListing::class)
 <h1 style="margin-bottom: 24px;">Neue Jobanzeige erstellen</h1>
 
 @if ($errors->any())
@@ -79,4 +80,5 @@
         <a class="btn btn-secondary" href="{{ request('return', route('jobs.index')) }}">Abbrechen</a>
     </div>
 </form>
+@endcan
 @endsection

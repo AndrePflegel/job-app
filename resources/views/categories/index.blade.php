@@ -15,9 +15,11 @@
 </div>
 @endif
 
+@can('create', App\Models\Category::class)
 <p style="margin-bottom: 20px;">
     <a class="btn btn-primary" href="{{ route('categories.create') }}">+ Neue Kategorie anlegen</a>
 </p>
+@endcan
 
 @forelse($categories as $category)
 <div class="job-card">
@@ -26,13 +28,17 @@
     <p><strong>Zugeordnete Jobs:</strong> {{ $category->job_listings_count }}</p>
 
     <div class="action-row">
+        @can('update', $category)
         <a class="btn btn-primary" href="{{ route('categories.edit', $category->id) }}">Bearbeiten</a>
+        @endcan
 
+        @can('delete', $category)
         <form class="inline-form" action="{{ route('categories.destroy', $category->id) }}" method="POST" onsubmit="return confirm('Möchtest du diese Kategorie wirklich löschen?');">
             @csrf
             @method('DELETE')
             <button class="btn btn-danger" type="submit">Löschen</button>
         </form>
+        @endcan
     </div>
 </div>
 @empty

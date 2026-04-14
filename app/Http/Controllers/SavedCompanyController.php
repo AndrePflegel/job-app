@@ -9,27 +9,21 @@ class SavedCompanyController extends Controller
 {
     public function store(Request $request, Company $company)
     {
-        $user = auth()->user();
+        $this->authorize('save', $company);
 
-        if (!$user || !$user->isVisitor()) {
-            abort(403, 'Nur Visitor können Firmen speichern.');
-        }
+        $request->user()->savedCompanies()->syncWithoutDetaching([$company->id]);
 
-        $user->savedCompanies()->syncWithoutDetaching([$company->id]);
-
-        return redirect()->back()->with('success', 'Firma wurde gespeichert.');
+        return redirect()->back()
+            ->with('success', 'Firma wurde gespeichert.');
     }
 
     public function destroy(Request $request, Company $company)
     {
-        $user = auth()->user();
+        $this->authorize('unsave', $company);
 
-        if (!$user || !$user->isVisitor()) {
-            abort(403, 'Nur Visitor können gespeicherte Firmen verwalten.');
-        }
+        $request->user()->savedCompanies()->detach($company->id);
 
-        $user->savedCompanies()->detach($company->id);
-
-        return redirect()->back()->with('success', 'Firma wurde aus deinen gemerkten Firmen entfernt.');
+        return redirect()->back()
+            ->with('success', 'Firma wurde aus deinen gemerkten Firmen entfernt.');
     }
 }

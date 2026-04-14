@@ -9,7 +9,7 @@ class CategoryController extends Controller
 {
     public function index()
     {
-        $this->authorizeAdmin();
+        $this->authorize('viewAny', Category::class);
 
         $categories = Category::withCount('jobListings')
             ->orderBy('name')
@@ -20,14 +20,14 @@ class CategoryController extends Controller
 
     public function create()
     {
-        $this->authorizeAdmin();
+        $this->authorize('create', Category::class);
 
         return view('categories.create');
     }
 
     public function store(Request $request)
     {
-        $this->authorizeAdmin();
+        $this->authorize('create', Category::class);
 
         $validated = $request->validate([
             'name' => 'required|string|max:255|unique:categories,name',
@@ -41,14 +41,14 @@ class CategoryController extends Controller
 
     public function edit(Category $category)
     {
-        $this->authorizeAdmin();
+        $this->authorize('update', $category);
 
         return view('categories.edit', compact('category'));
     }
 
     public function update(Request $request, Category $category)
     {
-        $this->authorizeAdmin();
+        $this->authorize('update', $category);
 
         $validated = $request->validate([
             'name' => 'required|string|max:255|unique:categories,name,' . $category->id,
@@ -62,7 +62,7 @@ class CategoryController extends Controller
 
     public function destroy(Category $category)
     {
-        $this->authorizeAdmin();
+        $this->authorize('delete', $category);
 
         if ($category->jobListings()->exists()) {
             return redirect()->route('categories.index')
@@ -73,14 +73,5 @@ class CategoryController extends Controller
 
         return redirect()->route('categories.index')
             ->with('success', 'Kategorie gelöscht.');
-    }
-
-    private function authorizeAdmin(): void
-    {
-        $user = auth()->user();
-
-        if (!$user || !$user->isAdmin()) {
-            abort(403);
-        }
     }
 }

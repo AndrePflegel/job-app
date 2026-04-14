@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+@can('create', App\Models\Company::class)
 <h1 class="page-title">Neue Firma anlegen</h1>
 
 @if ($errors->any())
@@ -39,4 +40,5 @@
         </div>
     </form>
 </div>
+@endcan
 @endsection

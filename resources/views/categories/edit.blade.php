@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+@can('update', $category)
 <h1 class="page-title">Kategorie bearbeiten</h1>
 
 @if ($errors->any())
@@ -29,5 +30,16 @@
             <a class="btn btn-secondary" href="{{ route('categories.index') }}">Zurück</a>
         </div>
     </form>
+
+    @can('delete', $category)
+    <div class="action-row" style="margin-top: 16px;">
+        <form class="inline-form" action="{{ route('categories.destroy', $category->id) }}" method="POST" onsubmit="return confirm('Möchtest du diese Kategorie wirklich löschen?');">
+            @csrf
+            @method('DELETE')
+            <button class="btn btn-danger" type="submit">Löschen</button>
+        </form>
+    </div>
+    @endcan
 </div>
+@endcan
 @endsection

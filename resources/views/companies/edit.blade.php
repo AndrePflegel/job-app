@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+@can('update', $company)
 <h1 class="page-title">Firma bearbeiten</h1>
 
 @if ($errors->any())
@@ -39,5 +40,16 @@
             <a class="btn btn-secondary" href="{{ route('companies.index') }}">Zurück</a>
         </div>
     </form>
+
+    @can('delete', $company)
+    <div class="action-row" style="margin-top: 16px;">
+        <form class="inline-form" action="{{ route('companies.destroy', $company->id) }}" method="POST" onsubmit="return confirm('Möchtest du diese Firma wirklich löschen?');">
+            @csrf
+            @method('DELETE')
+            <button class="btn btn-danger" type="submit">Löschen</button>
+        </form>
+    </div>
+    @endcan
 </div>
+@endcan
 @endsection
